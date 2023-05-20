@@ -1,0 +1,21 @@
+.toast {
+  position: fixed;
+  background-color: var(--toastBg);
+  color: white;
+  padding: 2% 5% 2% 5%;
+  border-radius: 1000px;
+  max-width: 80%;
+  min-width: 30%;
+  text-align: center;
+  transition: opacity .5s ease-in-out;
+  white-space: pre-wrap;
+  overflow: hidden;
+}
+
+.toast-show {
+  opacity: 1;
+}
+
+.toast-hide {
+  opacity: 0;
+}

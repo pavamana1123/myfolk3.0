@@ -1,0 +1,113 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
+
+:root {
+  --bar: #1976d2;
+  --bg: #e7ebf0;
+  --secondaryBg: #1f2c34;
+  --toastBg: #6d6c6c71;
+  --green: #005c4b;
+}
+
+body {
+  background-color: var(--bg);  
+  color: white;
+  font-size: 4vw;
+}
+
+button {
+  background-color: var(--green);
+  color: white;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: 5vw;
+  padding: 2%;
+  height: fit-content;
+  transition: background-color 0.5s;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+input:focus {
+  border-color: var(--green)
+}
+
+i {
+  color:#00a356;
+  font-size: 4vw;
+  cursor: pointer;
+  user-select: none;
+  margin: 0 2vw 0 .75vw;
+}
+
+.App {
+  display: grid;
+  grid-template-areas:
+  'header'
+  'body'
+}
+
+.glass {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 99;
+}
+
+.dark-glass {
+  background-color: black;
+  opacity: 0.75;
+}
+
+.clickable {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+}
+
+span.ripple {
+  position: absolute; /* The absolute position we mentioned earlier */
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 600ms linear;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.unsel {
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.light {
+  color: #555;
+}
+
+body {
+  max-height: 100vw;
+  overflow: hidden;
+}
+
+
+@media only screen and (min-width: 1080px) {
+
+  body {
+    font-size: 1.2vw;
+  }
+
+}
+
+

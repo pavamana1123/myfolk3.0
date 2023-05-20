@@ -1,0 +1,43 @@
+.header_logo {
+    width:12vw;
+}
+
+.appHeader {
+    position: relative;
+    display: flex;
+    height: 10vw;
+    width: 100%;
+    background-color: var(--bar);
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    font-size: 4.3vw;
+}
+
+#menuButton {
+    margin: 0% 3% 0% 0%;
+    font-size: 4vw;
+}
+
+#slideMenuButton {
+    margin: 0% 0% 0% 3%;
+}
+
+.clickableIcon {
+    display: flex;
+    width: 6vw;
+    height: 6vw;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+@media only screen and (min-width: 1080px) {
+
+    .appHeader {
+        height: 4vw;
+        font-size: 1.7vw;
+    }
+   
+}

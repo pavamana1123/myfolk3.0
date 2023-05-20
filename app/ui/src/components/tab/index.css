@@ -1,0 +1,39 @@
+.tab {
+    width: 100%;
+}
+
+.tabHeaderItems {
+    display: flex;
+    justify-content: space-around;
+    height: 8vw;
+    align-items: center;
+}
+
+.tabHeaderItem {
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+.tabUnderline {
+    position: relative;
+    height: 0.5vw;
+    background: var(--bar);
+    transition: left .2s ease-in-out;
+}
+
+.tabHeader {
+    background-color: white;
+}
+
+@media only screen and (min-width: 1080px) {
+
+    .tabHeaderItems {
+        height: 2.7vw;
+    }
+
+    .tabUnderline{
+        height: 0.2vw;
+    }
+}

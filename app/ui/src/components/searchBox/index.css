@@ -1,0 +1,21 @@
+.searchField {
+  width: 100%;
+  transition: opacity .2s;
+  margin-right: -4.5vw;
+  transform-origin: right;
+  transition: width 0.2s, opacity .2s, visibility .2s;
+}
+.searchField#show {
+  width: 50vw;
+  opacity: 1;
+}
+
+.searchField#hide {
+  width: .1vw;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.searchIcon {
+  margin-bottom: 1vw;
+}

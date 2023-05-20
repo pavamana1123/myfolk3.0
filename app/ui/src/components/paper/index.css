@@ -1,0 +1,14 @@
+.paper {
+    background-color: white;
+    padding: 3vw;
+    width: 80vw;
+    border-radius: 1vw;
+    box-shadow: -2px 2px 3px #aaa;
+}
+
+@media only screen and (min-width: 1080px) {
+    .paper {
+        padding: 1.3vw;
+        border-radius: .5vw;
+    }
+}

@@ -1,0 +1,26 @@
+.modalBox {
+  position: fixed;
+  top: 15vh;
+  width: 80vw;
+  z-index: 999;
+  left: 10vw;
+  background-color: #2a3b45;
+}
+
+.modalBody {
+  background-color: var(--bg);
+  padding: 3%;
+  min-height: 50vw;
+}
+
+.modalTitle {
+  padding: 2% 2% 2% 4%;
+  background-color: var(--secondaryBg);
+  min-height: 5vw;
+}
+
+.modalTitleItems{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
