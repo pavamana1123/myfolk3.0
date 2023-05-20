@@ -10,8 +10,6 @@
 
 body {
   background-color: var(--bg);  
-  color: white;
-  font-size: 4vw;
 }
 
 button {

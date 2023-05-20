@@ -1,0 +1,54 @@
+.contact {
+    display: flex;
+    flex-direction: row;
+    width: 95vw;
+    background-color: white;
+}
+
+.contact-status {
+    width: .5vw;
+    background-color: red;
+}
+
+.contact-details {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.contact-basic-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: .3vw;
+}
+
+.contact-stats {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.contact-stats-item {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-evenly;
+    padding: .3vw;
+
+}
+
+.contact-stats .odd {
+    background-color: aliceblue;
+}
+
+.contact-stats .even {
+    background-color: azure;
+}
+
+.contact-basic-details-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
