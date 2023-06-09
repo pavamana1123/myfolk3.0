@@ -28,9 +28,9 @@ function generateInsertStatements(tableName, entries) {
         values.push(username, meta);
     }
   
-      const columnString = columns.map(c=>{
-        return `${}`
-      }).join(', ');
+      const columnString = columns.
+
+join(', ');
       const valueString = values.map(value => {
         if (typeof value === 'string') {
           return `'${value}'`;
