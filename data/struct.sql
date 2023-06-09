@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `iskconmy_folk` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `iskconmy_folk`;
--- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
 -- Host: localhost    Database: iskconmy_folk
 -- ------------------------------------------------------
--- Server version	8.0.19
+-- Server version	8.0.26
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -46,16 +46,17 @@ LOCK TABLES `calendar` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `contacts`
+-- Table structure for table `participants`
 --
 
-DROP TABLE IF EXISTS `contacts`;
+DROP TABLE IF EXISTS `participants`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `contacts` (
+CREATE TABLE `participants` (
   `id` varchar(45) NOT NULL,
   `name` varchar(45) NOT NULL,
   `phone` varchar(45) NOT NULL,
+  `program` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `isStudent` tinyint DEFAULT NULL,
   `callNotAvailable` tinyint DEFAULT '0',
@@ -71,7 +72,6 @@ CREATE TABLE `contacts` (
   `comments` varchar(500) DEFAULT NULL,
   `dateAdded` varchar(45) DEFAULT NULL,
   `addedBy` varchar(45) DEFAULT NULL,
-  `contactscol` varchar(45) DEFAULT NULL,
   `preacher` varchar(45) DEFAULT NULL,
   `buddy` varchar(45) DEFAULT NULL,
   `source` varchar(45) DEFAULT NULL,
@@ -82,12 +82,12 @@ CREATE TABLE `contacts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `contacts`
+-- Dumping data for table `participants`
 --
 
-LOCK TABLES `contacts` WRITE;
-/*!40000 ALTER TABLE `contacts` DISABLE KEYS */;
-/*!40000 ALTER TABLE `contacts` ENABLE KEYS */;
+LOCK TABLES `participants` WRITE;
+/*!40000 ALTER TABLE `participants` DISABLE KEYS */;
+/*!40000 ALTER TABLE `participants` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -111,6 +111,46 @@ CREATE TABLE `programs` (
 LOCK TABLES `programs` WRITE;
 /*!40000 ALTER TABLE `programs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `programs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `prospects`
+--
+
+DROP TABLE IF EXISTS `prospects`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `prospects` (
+  `id` varchar(45) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `phone` varchar(45) NOT NULL,
+  `program` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `isStudent` tinyint DEFAULT NULL,
+  `callNotAvailable` tinyint DEFAULT '0',
+  `whatsAppNotAvailable` tinyint DEFAULT '0',
+  `yearOfJoining` int DEFAULT NULL,
+  `institution` varchar(45) DEFAULT NULL,
+  `course` varchar(45) DEFAULT NULL,
+  `company` varchar(45) DEFAULT NULL,
+  `highestQualification` varchar(45) DEFAULT NULL,
+  `designation` varchar(45) DEFAULT NULL,
+  `skills` varchar(500) DEFAULT NULL,
+  `comments` varchar(500) DEFAULT NULL,
+  `dateAdded` varchar(45) DEFAULT NULL,
+  `addedBy` varchar(45) DEFAULT NULL,
+  `source` varchar(45) DEFAULT NULL,
+  `batch` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `prospects`
+--
+
+LOCK TABLES `prospects` WRITE;
+/*!40000 ALTER TABLE `prospects` DISABLE KEYS */;
+/*!40000 ALTER TABLE `prospects` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -139,6 +179,35 @@ CREATE TABLE `registrations` (
 LOCK TABLES `registrations` WRITE;
 /*!40000 ALTER TABLE `registrations` DISABLE KEYS */;
 /*!40000 ALTER TABLE `registrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `roles`
+--
+
+DROP TABLE IF EXISTS `roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `roles` (
+  `id` varchar(45) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `phone` varchar(45) NOT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `skills` varchar(500) DEFAULT NULL,
+  `dateAdded` varchar(45) DEFAULT NULL,
+  `addedBy` varchar(45) DEFAULT NULL,
+  `role` varchar(45) DEFAULT NULL,
+  `roleID` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `roles`
+--
+
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -174,4 +243,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-09 12:35:14
+-- Dump completed on 2023-06-09 12:45:10
