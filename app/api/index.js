@@ -2,7 +2,7 @@ global.fetch = require("node-fetch");
 const express = require('express')
 const app = express()
 app.use(express.json()) 
-const port = 1
+const port = 3005
 
 const API  = require("./api.js")
 var cred = require("./cred.js")
