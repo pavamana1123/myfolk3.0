@@ -29,7 +29,6 @@ CREATE TABLE `calendar` (
   `date` varchar(45) DEFAULT NULL,
   `program` varchar(45) DEFAULT NULL,
   `name` varchar(45) DEFAULT NULL,
-  `time` varchar(45) DEFAULT NULL,
   `venue` varchar(45) DEFAULT NULL,
   `speaker` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`eventId`)
@@ -53,7 +52,7 @@ DROP TABLE IF EXISTS `participants`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `participants` (
-  `id` varchar(45) NOT NULL,
+  `username` varchar(45) NOT NULL,
   `name` varchar(45) NOT NULL,
   `phone` varchar(45) NOT NULL,
   `program` varchar(45) DEFAULT NULL,
@@ -77,7 +76,8 @@ CREATE TABLE `participants` (
   `source` varchar(45) DEFAULT NULL,
   `category` varchar(45) DEFAULT 'General',
   `batch` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `pass` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -91,6 +91,35 @@ LOCK TABLES `participants` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `participation`
+--
+
+DROP TABLE IF EXISTS `participation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `participation` (
+  `eventId` varchar(45) NOT NULL,
+  `username` varchar(45) DEFAULT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `phone` varchar(45) DEFAULT NULL,
+  `caller` varchar(45) DEFAULT NULL,
+  `response` varchar(45) DEFAULT NULL,
+  `remarks` varchar(45) DEFAULT NULL,
+  `attendance` tinyint DEFAULT NULL,
+  `time` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `participation`
+--
+
+LOCK TABLES `participation` WRITE;
+/*!40000 ALTER TABLE `participation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `participation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `programs`
 --
 
@@ -100,6 +129,7 @@ DROP TABLE IF EXISTS `programs`;
 CREATE TABLE `programs` (
   `id` varchar(45) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
+  `type` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -150,6 +180,7 @@ CREATE TABLE `prospects` (
 
 LOCK TABLES `prospects` WRITE;
 /*!40000 ALTER TABLE `prospects` DISABLE KEYS */;
+INSERT INTO `prospects` VALUES ('JohnDoe','John Doe','9876543210',NULL,'johndoe@gmail.com',NULL,0,0,NULL,NULL,NULL,'ABC Company',NULL,'Software Engineer',NULL,'Interested in joining the program','2023-06-09','Admin','Website',NULL),('RahulSharma','Rahul Sharma','9123456780',NULL,'rahulsharma@gmail.com',NULL,0,0,NULL,NULL,NULL,'XYZ Company',NULL,'Marketing Executive',NULL,'Would like more information about the program','2023-06-09','Admin','Advertisement',NULL);
 /*!40000 ALTER TABLE `prospects` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +194,8 @@ DROP TABLE IF EXISTS `registrations`;
 CREATE TABLE `registrations` (
   `date` varchar(45) NOT NULL,
   `program` varchar(45) DEFAULT NULL,
-  `contactId` varchar(45) DEFAULT NULL,
+  `username` varchar(45) DEFAULT NULL,
+  `phone` varchar(45) DEFAULT NULL,
   `paid` tinyint DEFAULT NULL,
   `paymentMode` varchar(45) DEFAULT NULL,
   `paymentReference` varchar(45) DEFAULT NULL,
@@ -189,15 +221,11 @@ DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `roles` (
-  `id` varchar(45) NOT NULL,
-  `name` varchar(45) NOT NULL,
-  `phone` varchar(45) NOT NULL,
-  `email` varchar(45) DEFAULT NULL,
-  `skills` varchar(500) DEFAULT NULL,
-  `dateAdded` varchar(45) DEFAULT NULL,
-  `addedBy` varchar(45) DEFAULT NULL,
-  `role` varchar(45) DEFAULT NULL,
-  `roleID` varchar(45) DEFAULT NULL
+  `username` varchar(45) NOT NULL,
+  `roleIndex` varchar(45) DEFAULT NULL,
+  `roleID` varchar(45) DEFAULT NULL,
+  `pass` varchar(45) DEFAULT NULL,
+  `roleName` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -207,6 +235,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES ('1','FG','0',NULL,NULL),('2','FG','0','c4ca4238a0b923820dcc509a6f75849b',NULL),('3','Volunteer','1',NULL,NULL),('4','Volunteer','1',NULL,NULL);
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -218,10 +247,11 @@ DROP TABLE IF EXISTS `sessions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sessions` (
-  `course` varchar(45) DEFAULT NULL,
+  `program` varchar(45) DEFAULT NULL,
   `name` varchar(45) DEFAULT NULL,
   `message` varchar(45) DEFAULT NULL,
-  `canvaLink` varchar(45) DEFAULT NULL
+  `canvaLink` varchar(45) DEFAULT NULL,
+  `posterLink` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -233,6 +263,33 @@ LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `username` varchar(45) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `phone` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `addedBy` varchar(45) DEFAULT NULL,
+  `addedDate` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -243,4 +300,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-09 12:45:10
+-- Dump completed on 2023-06-09 19:40:50
