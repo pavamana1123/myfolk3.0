@@ -52,9 +52,6 @@ function generateInsertStatements(tableName, entries) {
 
   return insertStatements;
 }
-
-
-
   
 const axios = require('axios');
 
