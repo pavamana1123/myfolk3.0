@@ -1,53 +1,58 @@
 
 function generateInsertStatements(tableName, entries) {
-    const insertStatements = [];
-  
-    for (const entry of entries) {
-      const columns = Object.keys(entry);
-      const values = Object.values(entry);
-  
-      // Handle exceptions for the "participants" table
-      if (tableName === 'participants') {
-        const username = entry.name.toLowerCase().replace(/\s/g, '');
-        const callNotAvailable = 0;
-        const whatsAppNotAvailable = 0;
-        const addedBy = entry.buddy.toLowerCase().replace(/\s/g, '');
-        const pass = '';
-        const preacher = entry.preacher.toLowerCase().replace(/\s/g, '');
-  
-        columns.push('username', 'callNotAvailable', 'whatsAppNotAvailable', 'addedBy', 'pass', 'preacher');
-        values.push(username, callNotAvailable, whatsAppNotAvailable, addedBy, pass, preacher);
-      }
+  const insertStatements = [];
+
+  for (const entry of entries) {
+    const columns = Object.keys(entry);
+    const values = Object.values(entry);
+
+    // Handle exceptions for the "participants" table
+    if (tableName === 'participants') {
+      const username = entry.name.toLowerCase().replace(/\s/g, '');
+      const callNotAvailable = false;
+      const whatsAppNotAvailable = false;
+      const addedBy = entry.buddy.toLowerCase().replace(/\s/g, '');
+      const pass = '';
+      const preacher = entry.preacher.toLowerCase().replace(/\s/g, '');
+
+      columns.push('username', 'callNotAvailable', 'whatsAppNotAvailable', 'addedBy', 'pass', 'preacher');
+      values.push(username, callNotAvailable, whatsAppNotAvailable, addedBy, pass, preacher);
+    }
 
     // Handle exceptions for the "registrations" table
     if (tableName === 'registrations') {
-        const username = entry.name === '#N/A' ? null : entry.name.toLowerCase().replace(/\s/g, '');
-        const meta = null;
-  
-        columns.push('username', 'meta');
-        values.push(username, meta);
+      const username = entry.name === '#N/A' ? null : entry.name.toLowerCase().replace(/\s/g, '');
+      const meta = null;
+
+      columns.push('username', 'meta');
+      values.push(username, meta);
     }
-  
-      const columnString = columns.map(c=>{
-        return `${}`
-      }).join(', ');
-      const valueString = values.map(value => {
-        if (typeof value === 'string') {
-          return `'${value}'`;
-        }
-        return value;
-      }).join(', ');
-  
-      const updateString = columns.map(column => {
-        return `${column} = VALUES(${column})`;
-      }).join(', ');
-  
-      const insertStatement = `INSERT INTO ${tableName} (${columnString}) VALUES (${valueString}) ON DUPLICATE KEY UPDATE ${updateString};`;
-      insertStatements.push(insertStatement);
-    }
-  
-    return insertStatements;
+
+    const columnString = columns.map(column => {
+      const [table, field] = column.split('.');
+      return `${table}.${field}`;
+    }).join(', ');
+
+    const valueString = values.map(value => {
+      if (typeof value === 'string') {
+        return `'${value}'`;
+      }
+      return value;
+    }).join(', ');
+
+    const updateString = columns.map(column => {
+      const [table, field] = column.split('.');
+      return `${table}.${field} = VALUES(${table}.${field})`;
+    }).join(', ');
+
+    const insertStatement = `INSERT INTO ${tableName} (${columnString}) VALUES (${valueString}) ON DUPLICATE KEY UPDATE ${updateString};`;
+    insertStatements.push(insertStatement);
+  }
+
+  return insertStatements;
 }
+
+
   
 const axios = require('axios');
 
@@ -122,14 +127,14 @@ makePostRequest()
     const fs = require('fs');
 
     try {
-    fs.writeFileSync('sync.sql', insertStatements.join(`;
+    fs.writeFileSync('sync.sql', insertStatements.join(`
 `));
         console.log('String successfully written to sync.sql');
     } catch (err) {
         console.error('Error writing to file:', err);
     }
 
-    executeMultipleStatementQuery(insertStatements.join("; "))
+    executeMultipleStatementQuery(insertStatements.join(" "))
     .then(results => {
         console.log('Sync complete');
     })
