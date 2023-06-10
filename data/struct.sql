@@ -28,21 +28,12 @@ CREATE TABLE `calendar` (
   `eventId` varchar(45) NOT NULL,
   `date` varchar(45) DEFAULT NULL,
   `program` varchar(45) DEFAULT NULL,
-  `name` varchar(45) DEFAULT NULL,
+  `name` mediumtext,
   `venue` varchar(45) DEFAULT NULL,
   `speaker` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`eventId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `calendar`
---
-
-LOCK TABLES `calendar` WRITE;
-/*!40000 ALTER TABLE `calendar` DISABLE KEYS */;
-/*!40000 ALTER TABLE `calendar` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `participants`
@@ -57,18 +48,20 @@ CREATE TABLE `participants` (
   `phone` varchar(45) NOT NULL,
   `program` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
+  `dob` varchar(45) DEFAULT NULL,
+  `snoozeDate` varchar(45) DEFAULT NULL,
   `isStudent` tinyint DEFAULT NULL,
   `callNotAvailable` tinyint DEFAULT '0',
   `whatsAppNotAvailable` tinyint DEFAULT '0',
-  `yearOfJoining` int DEFAULT NULL,
-  `institution` varchar(45) DEFAULT NULL,
-  `course` varchar(45) DEFAULT NULL,
-  `company` varchar(45) DEFAULT NULL,
-  `highestQualification` varchar(45) DEFAULT NULL,
-  `designation` varchar(45) DEFAULT NULL,
+  `yearOfJoining` varchar(45) DEFAULT NULL,
+  `institution` mediumtext,
+  `course` mediumtext,
+  `company` mediumtext,
+  `highestQualification` mediumtext,
+  `designation` mediumtext,
   `tShirtSize` varchar(45) DEFAULT NULL,
-  `skills` varchar(500) DEFAULT NULL,
-  `comments` varchar(500) DEFAULT NULL,
+  `skills` longtext,
+  `comments` longtext,
   `dateAdded` varchar(45) DEFAULT NULL,
   `addedBy` varchar(45) DEFAULT NULL,
   `preacher` varchar(45) DEFAULT NULL,
@@ -76,19 +69,11 @@ CREATE TABLE `participants` (
   `source` varchar(45) DEFAULT NULL,
   `category` varchar(45) DEFAULT 'General',
   `batch` varchar(45) DEFAULT NULL,
+  `native` mediumtext,
   `pass` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `participants`
---
-
-LOCK TABLES `participants` WRITE;
-/*!40000 ALTER TABLE `participants` DISABLE KEYS */;
-/*!40000 ALTER TABLE `participants` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `participation`
@@ -112,15 +97,6 @@ CREATE TABLE `participation` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `participation`
---
-
-LOCK TABLES `participation` WRITE;
-/*!40000 ALTER TABLE `participation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `participation` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `programs`
 --
 
@@ -134,15 +110,6 @@ CREATE TABLE `programs` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `programs`
---
-
-LOCK TABLES `programs` WRITE;
-/*!40000 ALTER TABLE `programs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `programs` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `prospects`
@@ -176,16 +143,6 @@ CREATE TABLE `prospects` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `prospects`
---
-
-LOCK TABLES `prospects` WRITE;
-/*!40000 ALTER TABLE `prospects` DISABLE KEYS */;
-INSERT INTO `prospects` VALUES ('JohnDoe','John Doe','9876543210',NULL,'johndoe@gmail.com',NULL,0,0,NULL,NULL,NULL,'ABC Company',NULL,'Software Engineer',NULL,'Interested in joining the program','2023-06-09','Admin','Website',NULL),('RahulSharma','Rahul Sharma','9123456780',NULL,'rahulsharma@gmail.com',NULL,0,0,NULL,NULL,NULL,'XYZ Company',NULL,'Marketing Executive',NULL,'Would like more information about the program','2023-06-09','Admin','Advertisement',NULL);
-/*!40000 ALTER TABLE `prospects` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `registrations`
 --
 
@@ -207,15 +164,6 @@ CREATE TABLE `registrations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `registrations`
---
-
-LOCK TABLES `registrations` WRITE;
-/*!40000 ALTER TABLE `registrations` DISABLE KEYS */;
-/*!40000 ALTER TABLE `registrations` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `roles`
 --
 
@@ -226,20 +174,10 @@ CREATE TABLE `roles` (
   `username` varchar(45) NOT NULL,
   `roleIndex` varchar(45) DEFAULT NULL,
   `roleID` varchar(45) DEFAULT NULL,
-  `pass` varchar(45) DEFAULT NULL,
-  `roleName` varchar(45) DEFAULT NULL
+  `roleName` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `roles`
---
-
-LOCK TABLES `roles` WRITE;
-/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES ('1','FG','0',NULL,NULL),('2','FG','0','c4ca4238a0b923820dcc509a6f75849b',NULL),('3','Volunteer','1',NULL,NULL),('4','Volunteer','1',NULL,NULL);
-/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `sessions`
@@ -252,20 +190,11 @@ CREATE TABLE `sessions` (
   `program` varchar(45) DEFAULT NULL,
   `name` varchar(45) DEFAULT NULL,
   `message` varchar(45) DEFAULT NULL,
-  `canvaLink` varchar(45) DEFAULT NULL,
+  `canvaLink` mediumtext,
   `posterLink` varchar(45) DEFAULT NULL,
   UNIQUE KEY `sc_compound_key` (`program`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sessions`
---
-
-LOCK TABLES `sessions` WRITE;
-/*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `users`
@@ -281,18 +210,10 @@ CREATE TABLE `users` (
   `email` varchar(45) DEFAULT NULL,
   `addedBy` varchar(45) DEFAULT NULL,
   `addedDate` varchar(45) DEFAULT NULL,
+  `pass` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `users`
---
-
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -303,4 +224,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-10 10:23:20
+-- Dump completed on 2023-06-10 14:37:44

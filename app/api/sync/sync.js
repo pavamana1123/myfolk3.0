@@ -9,24 +9,33 @@ function generateInsertStatements(tableName, entries) {
     // Handle exceptions for the "participants" table
     if (tableName === 'participants') {
       const username = entry.name.toLowerCase().replace(/\s/g, '');
-      const callNotAvailable = false;
-      const whatsAppNotAvailable = false;
-      const addedBy = entry.buddy.toLowerCase().replace(/\s/g, '');
+      entry.buddy = entry.buddy === 'Core' || entry.buddy === '-' ? null : entry.buddy.toLowerCase().replace(/\s/g, '');
       const pass = '';
-      const preacher = entry.preacher.toLowerCase().replace(/\s/g, '');
+      entry.preacher = entry.preacher.toLowerCase().replace(/\s/g, '');
 
-      columns.push('username', 'callNotAvailable', 'whatsAppNotAvailable', 'addedBy', 'pass', 'preacher');
-      values.push(username, callNotAvailable, whatsAppNotAvailable, addedBy, pass, preacher);
+      columns.push(`${tableName}.username`, `${tableName}.pass`);
+      values.push(username, pass);
     }
 
     // Handle exceptions for the "registrations" table
     if (tableName === 'registrations') {
-      const username = entry.name === '#N/A' ? null : entry.name.toLowerCase().replace(/\s/g, '');
-      const meta = null;
+      entry.name = entry.name === '#N/A' ? null : entry.name;
+      const username = entry.name === null ? null : entry.name.toLowerCase().replace(/\s/g, '');
 
-      columns.push('username', 'meta');
-      values.push(username, meta);
+      columns.push(`${tableName}.username`);
+      values.push(username);
     }
+
+    // Handle exceptions for the "participation" table
+    if (tableName === 'participation') {
+      entry.name = entry.name === '#N/A' ? null : entry.name;
+      entry.remarks = Buffer.from(entry.remarks).toString('base64');
+      const username = entry.name === null ? null : entry.name.toLowerCase().replace(/\s/g, '');
+      entry.caller = (entry.caller||"").toLowerCase().replace(/\s/g, '');
+
+      columns.push(`${tableName}.username`);  
+      values.push(username);
+    } 
 
     for (const column in entry) {
       columns.push(`${tableName}.${column}`);
@@ -36,21 +45,29 @@ function generateInsertStatements(tableName, entries) {
     const columnString = columns.join(', ');
     const valueString = values.map(value => {
       if (typeof value === 'string') {
-        return `'${value}'`;
+        return `'${value.replace(/'/g, "''")}'`;
+      }else if(value===null){
+        return "null"
       }
       return value;
     }).join(', ');
 
-    const updateString = columns.map(column => {
-      const field = column.split('.')[1];
-      return `${column} = VALUES(${field})`;
-    }).join(', ');
-
-    const insertStatement = `INSERT INTO ${tableName} (${columnString}) VALUES (${valueString}) ON DUPLICATE KEY UPDATE ${updateString};`;
+    const insertStatement = `INSERT INTO ${tableName} (${columnString}) VALUES (${valueString});`;
     insertStatements.push(insertStatement);
   }
 
   return insertStatements;
+}
+
+function generateDeleteQueries(data) {
+  const deleteQueries = [];
+
+  for (const tableName in data) {
+    const deleteQuery = `DELETE FROM iskconmy_folk.${tableName};`;
+    deleteQueries.push(deleteQuery);
+  }
+
+  return deleteQueries;
 }
   
 const axios = require('axios');
@@ -123,6 +140,9 @@ makePostRequest()
         insertStatements = insertStatements.concat(generateInsertStatements(tableName, tableEntries))
     }
 
+    var delQ = generateDeleteQueries(tables)
+    insertStatements = delQ.concat(insertStatements)
+
     const fs = require('fs');
 
     try {
@@ -133,13 +153,14 @@ makePostRequest()
         console.error('Error writing to file:', err);
     }
 
-    executeMultipleStatementQuery(insertStatements.join(" "))
-    .then(results => {
-        console.log('Sync complete');
-    })
-    .catch(error => {
-        console.error('Error executing the query:', error);
-    });
+//     executeMultipleStatementQuery(insertStatements.join(`
+// `))
+//     .then(results => {
+//         console.log('Sync complete');
+//     })
+//     .catch(error => {
+//         console.error('Error executing the query:', error);
+//     });
   })
   .catch(error => {
     console.error('Something went wrong:', error);
