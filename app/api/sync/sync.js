@@ -3,8 +3,8 @@ function generateInsertStatements(tableName, entries) {
   const insertStatements = [];
 
   for (const entry of entries) {
-    const columns = Object.keys(entry);
-    const values = Object.values(entry);
+    const columns = [];
+    const values = [];
 
     // Handle exceptions for the "participants" table
     if (tableName === 'participants') {
@@ -28,11 +28,12 @@ function generateInsertStatements(tableName, entries) {
       values.push(username, meta);
     }
 
-    const columnString = columns.map(column => {
-      const [table, field] = column.split('.');
-      return `${table}.${field}`;
-    }).join(', ');
+    for (const column in entry) {
+      columns.push(`${tableName}.${column}`);
+      values.push(entry[column]);
+    }
 
+    const columnString = columns.join(', ');
     const valueString = values.map(value => {
       if (typeof value === 'string') {
         return `'${value}'`;
@@ -41,8 +42,8 @@ function generateInsertStatements(tableName, entries) {
     }).join(', ');
 
     const updateString = columns.map(column => {
-      const [table, field] = column.split('.');
-      return `${table}.${field} = VALUES(${table}.${field})`;
+      const field = column.split('.')[1];
+      return `${column} = VALUES(${field})`;
     }).join(', ');
 
     const insertStatement = `INSERT INTO ${tableName} (${columnString}) VALUES (${valueString}) ON DUPLICATE KEY UPDATE ${updateString};`;
@@ -51,6 +52,7 @@ function generateInsertStatements(tableName, entries) {
 
   return insertStatements;
 }
+
 
 
   
