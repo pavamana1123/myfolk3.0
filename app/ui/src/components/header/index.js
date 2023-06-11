@@ -1,19 +1,49 @@
-import { MainMenu, MainMenuCtl } from '../mainMenu';
+import { useState } from 'react';
 import './index.css';
 
-var mainMenu = new MainMenuCtl()
 
 function Header(props) {
-  var {onPageMenuClick, hideOptions, title} = props
+  var {children} = props
+
+  var [menuOpen, setMenuOpen] = useState(false);
+  var [contextMenuOpen, setContextMenuOpen] = useState(false);
+
+  const toggleMenu = ()=>{
+    setMenuOpen(!menuOpen)
+  }
+
+  const toggleContextMenu = ()=>{
+    setContextMenuOpen(!contextMenuOpen)
+  }
+
+  const closeMenu = ()=>{
+    setMenuOpen(false)
+  }
+
+  const closeContextMenu = ()=>{
+    setContextMenuOpen(false)
+  }
+
   return (
-    <div>
-        {!hideOptions && <MainMenu ctl={mainMenu} list={[1,2,3,4]}/>}
-        <div className="appHeader">
-          {!hideOptions && <i className="bi bi-list clickable clickableIcon" id="slideMenuButton" onClick={()=>{mainMenu.show()}}></i>}
-          <span>{title}</span>
-          {!hideOptions && <i className="bi bi-three-dots-vertical clickable clickableIcon" id="menuButton" onClick={onPageMenuClick}></i>}
-        </div>
+    <div className="header-holder">
+      <div className='header'>
+          <img src="header/menu.png" id="header-menu" onClick={toggleMenu}/>
+          <img src="header/logo.png" id="header-logo"/>
+          <img src="header/dots.png" id="header-dots" onClick={toggleContextMenu}/>
+      </div>
+
+      <div className={`header-menu ${menuOpen?'open':''}`}>
+      </div>
+      <div className={`header-contextmenu ${contextMenuOpen?'open':''}`}>
+        {children}
+      </div>
+
+      <div className={`header-menuglass ${!menuOpen?'hide':''}`} onClick={closeMenu}>
+      </div>
+      {contextMenuOpen?<div className={`header-contextmenuglass`} onClick={closeContextMenu}>
+      </div>:null}
     </div>
+
 
   );
 }

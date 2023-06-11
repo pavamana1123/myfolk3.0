@@ -1,43 +1,84 @@
-.header_logo {
-    width:12vw;
-}
-
-.appHeader {
-    position: relative;
-    display: flex;
-    height: 10vw;
-    width: 100%;
+.header {
     background-color: var(--bar);
-    align-items: center;
-    justify-content: space-around;
-    color: white;
-    font-size: 4.3vw;
-}
+    top: 0px;
+    left: 0px;
+    height: 8vh;
 
-#menuButton {
-    margin: 0% 3% 0% 0%;
-    font-size: 4vw;
-}
-
-#slideMenuButton {
-    margin: 0% 0% 0% 3%;
-}
-
-.clickableIcon {
     display: flex;
-    width: 6vw;
-    height: 6vw;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
-    border-radius: 50%;
+    width: 100vw;
+
+    justify-content: space-between;
+    flex-direction: row;
 }
 
-@media only screen and (min-width: 1080px) {
+#header-menu {
+    padding: 3vw;
+}
 
-    .appHeader {
-        height: 4vw;
-        font-size: 1.7vw;
-    }
-   
+#header-logo {
+    padding: 1.75vw;
+}
+
+#header-dots {
+    padding: 3vw;
+}
+
+.header-menu {
+    position: absolute;
+    top: 0px;
+    background-color: var(--surface);
+    width: 60vw;
+    height: 100vh;
+    box-shadow: 1vw 0vw 1vw rgba(128, 128, 128, 0.384);
+    transition: transform .3s ease-in-out;
+    transform: translateX(-120%);
+    z-index: 1000;
+}
+
+.header-menu.open {
+    transform: translateX(0%);
+}
+
+.header-menuglass, .header-contextmenuglass {
+    position: absolute;
+    background-color: white;
+    top: 0px;
+    height: 100vh;
+    width: 100vw;
+    z-index: 999;
+    opacity: 0.5;
+    visibility: visible;
+    transition: opacity .3s ease-in-out;
+}
+
+.header-contextmenuglass {
+    opacity: 0;
+}
+
+.header-menuglass.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+
+.header-contextmenu {
+    position: absolute;
+    z-index: 1000;
+    right: 0px;
+    background-color: white;
+    padding: 2vw;
+    border-radius: 0.75vw;
+    width: 20vw;
+    box-shadow: -1vw 1vw 1vw #11111125;
+    margin-right: 1vw;
+    margin-top: -1vw;
+    transform-origin: 100% 0%;
+    transform: scale(0);
+    transition: transform .1s ease-in-out;
+    opacity: 0.5;
+}
+
+.header-contextmenu.open {
+    transform: scale(1);
+    opacity: 1;
 }
