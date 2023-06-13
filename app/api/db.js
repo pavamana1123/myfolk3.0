@@ -13,6 +13,10 @@ class DB {
             });
         });
     }
+
+    close(){
+        this.db.end()
+    }
 }
 
 module.exports = DB

@@ -36,6 +36,27 @@ CREATE TABLE `calendar` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `compute`
+--
+
+DROP TABLE IF EXISTS `compute`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `compute` (
+  `username` varchar(255) NOT NULL,
+  `attendance` int DEFAULT NULL,
+  `sosAttendance` int DEFAULT NULL,
+  `folk2Attendance` int DEFAULT NULL,
+  `folk4Attendance` int DEFAULT NULL,
+  `lastSeen` int DEFAULT NULL,
+  `regularity` float DEFAULT NULL,
+  `status` varchar(45) DEFAULT NULL,
+  `activeness` float DEFAULT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `participants`
 --
 
@@ -107,6 +128,7 @@ CREATE TABLE `programs` (
   `id` varchar(45) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
   `type` varchar(45) DEFAULT NULL,
+  `level` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -224,4 +246,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-10 14:37:44
+-- Dump completed on 2023-06-13 16:08:00
