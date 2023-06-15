@@ -30,9 +30,7 @@ class API {
                   username: user.username,
                   name: user.name,
                   phone: user.phone,
-                  role: null,
-                  roleId: null,
-                  roleIndex: null
+                  roleInfo: []
                 };
               } else {
                 // Phone number not found in the participants table, check in the users table
@@ -45,9 +43,7 @@ class API {
                     username: user.username,
                     name: user.name,
                     phone: user.phone,
-                    role: null,
-                    roleId: null,
-                    roleIndex: null
+                    roleInfo: []
                   };
                 }
               }
@@ -63,10 +59,14 @@ class API {
                   result = await this.db.execQuery(query);
           
                   if (result.length > 0) {
-                    const role = result[0];
-                    userDetails.role = role.role;
-                    userDetails.roleId = role.roleId;
-                    userDetails.roleIndex = role.roleIndex;
+                    const roleInfo = result;
+                    userDetails.roleInfo = roleInfo.map(r=>{
+                      return {
+                        role: r.role,
+                        roleId: r.roleId,
+                        roleIndex: r.roleIndex
+                      }
+                    })
                   }
           
                   res.status(200).json(userDetails);
