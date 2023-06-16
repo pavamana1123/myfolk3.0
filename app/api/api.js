@@ -62,8 +62,8 @@ class API {
                     const roleInfo = result;
                     userDetails.roleInfo = roleInfo.map(r=>{
                       return {
-                        role: r.role,
-                        roleId: r.roleId,
+                        roleName: r.roleName,
+                        roleID: r.roleID,
                         roleIndex: r.roleIndex
                       }
                     })
