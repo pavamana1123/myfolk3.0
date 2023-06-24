@@ -15,51 +15,51 @@ class API {
 
           case '/login':
             try {
-              const { phone, username, password } = body;
+              const { phone, username, password } = body
           
-              let user = null;
-              let userDetails = null;
+              let user = null
+              let userDetails = null
           
               // Check if the phone number exists in the participants table
-              let query = `SELECT * FROM participants WHERE ${phone?"phone":"username"} = '${phone?phone:username}'`;
-              let result = await this.db.execQuery(query);
+              let query = `SELECT * FROM participants WHERE ${phone?"phone":"username"} = '${phone?phone:username}'`
+              let result = await this.db.execQuery(query)
           
               if (result.length > 0) {
-                user = result[0];
+                user = result[0]
                 userDetails = {
                   username: user.username,
                   name: user.name,
                   phone: user.phone,
                   roleInfo: []
-                };
+                }
               } else {
                 // Phone number not found in the participants table, check in the users table
-                query = `SELECT * FROM users WHERE ${phone?"phone":"username"} = '${phone?phone:username}'`;
-                result = await this.db.execQuery(query);
+                query = `SELECT * FROM users WHERE ${phone?"phone":"username"} = '${phone?phone:username}'`
+                result = await this.db.execQuery(query)
           
                 if (result.length > 0) {
-                  user = result[0];
+                  user = result[0]
                   userDetails = {
                     username: user.username,
                     name: user.name,
                     phone: user.phone,
                     roleInfo: []
-                  };
+                  }
                 }
               }
           
               if (user) {
                 // User exists, check the password
-                const storedPassword = user.pass; // Assuming the password is stored in a column named 'pass'
+                const storedPassword = user.pass // Assuming the password is stored in a column named 'pass'
           
                 // Compare the provided password with the stored password (assuming the password is already hashed)
                 if (password === storedPassword) {
                   // Password is correct, search in the roles table
-                  query = `SELECT * FROM roles WHERE username='${user.username}'`;
-                  result = await this.db.execQuery(query);
+                  query = `SELECT * FROM roles WHERE username='${user.username}'`
+                  result = await this.db.execQuery(query)
           
                   if (result.length > 0) {
-                    const roleInfo = result;
+                    const roleInfo = result
                     userDetails.roleInfo = roleInfo.map(r=>{
                       return {
                         roleName: r.roleName,
@@ -69,22 +69,63 @@ class API {
                     })
                   }
           
-                  res.status(200).json(userDetails);
+                  res.status(200).json(userDetails)
                 } else {
                   // Invalid password
-                  this.sendError(res, 403, "Invalid password");
+                  this.sendError(res, 403, "Invalid password")
                 }
               } else {
                 // User does not exist
-                this.sendError(res, 404, "User does not exist");
+                this.sendError(res, 404, "User does not exist")
               }
             } catch (error) {
               // Handle any error that occurred during the database query or other operations
-              console.error("Login error:", error);
-              this.sendError(res, 500, "Internal server error");
+              console.error("Login error:", error)
+              this.sendError(res, 500, "Internal server error")
             }
-            break;
+            break
            
+          case '/buddies':
+
+            const username = req.get("username")
+
+            try {
+              let query = `SELECT * FROM roles WHERE username = '${username}' order by roleIndex limit 1`
+              let result = await this.db.execQuery(query)
+          
+              if (result.length > 0) {
+
+                  var role = result[0]
+                  switch(role.roleID){
+                    case "FG":
+                      query=`select * from participants
+                      join compute on compute.username=participants.username
+                      order by compute.activeness`
+                      break
+                    case "Core":
+                      query=`select * from participants
+                      join compute on compute.username=participants.username
+                      where participants.buddy="${username}"
+                      order by compute.activeness`
+                      break
+                    default:
+                      this.sendError(res, 404, "Unauthorized")
+                      return
+                  }
+
+                  let buddies = await this.db.execQuery(query)
+                  res.status(200).json(buddies)
+              } else {
+                this.sendError(res, 404, "Unauthorized")
+                return
+              }
+            } catch (error) {
+              // Handle any error that occurred during the database query or other operations
+              console.error("Login error:", error)
+              this.sendError(res, 500, `Internal server error: ${error}`)
+            }
+            break
+
             default:
                 this.sendError(res, 404, "Invalid endpoint")
         }
@@ -100,7 +141,7 @@ class API {
         })
         .then(res => res.json())
         .then(callback)
-        .catch(errcallback);
+        .catch(errcallback)
     }
 
     sendError(res, code, msg){
