@@ -37,7 +37,7 @@ const Login = () => {
 
     // Make the API call
     axios
-      .post('/data', requestBody, { headers: { endpoint: '/login' } })
+      .post('/api', requestBody, { headers: { endpoint: '/login' } })
       .then((user) => {
         Cookies.set('save', JSON.stringify(user.data), { expires: 7 });
         window.open("/home","_self")

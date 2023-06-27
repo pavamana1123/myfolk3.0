@@ -18,7 +18,7 @@ class API {
     }
    
     async call(endpoint, body){
-        return this.instance.post('/data', body, { headers: { endpoint } })
+        return this.instance.post('/api', body, { headers: { endpoint } })
     }
 }
 
