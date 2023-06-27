@@ -14,7 +14,7 @@ var mysql = require('mysql');
 var db = new DB(mysql.createPool(cred.mysql))
 
 const api = new API(db)
-app.post('/data', api.call.bind(api))
+app.post('/api', api.call.bind(api))
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`)
