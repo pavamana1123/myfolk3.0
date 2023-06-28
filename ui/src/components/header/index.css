@@ -12,15 +12,15 @@
 }
 
 #header-menu {
-    padding: 3vw;
+    padding: 2.2vw;
 }
 
 #header-logo {
-    padding: 1.75vw;
+    padding: 1.2vw;
 }
 
 #header-dots {
-    padding: 3vw;
+    padding: 1.9vw;
 }
 
 .header-menu {
@@ -81,4 +81,31 @@
 .header-contextmenu.open {
     transform: scale(1);
     opacity: 1;
+}
+
+.header-menu-cont {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-user-det-cont {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: antiquewhite;
+    height: 35vw;
+}
+
+.header-user-det-dp {
+    display: flex;
+    background-color: var(--surface);
+    border-radius: 100%;
+    width: 30vw;
+    height: 30vw;
+    margin: 1.2vw;
+    align-items: center;
+    justify-content: center;
+    font-size: 10vw;
+    color: white;
 }

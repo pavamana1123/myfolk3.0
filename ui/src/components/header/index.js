@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './index.css';
+import Cookies from 'js-cookie'
 
 
 function Header(props) {
@@ -24,6 +25,23 @@ function Header(props) {
     setContextMenuOpen(false)
   }
 
+  const getInitials = (name) => {
+    const words = name.split(' ');
+    
+    if (words.length === 1) {
+      if (words[0].length === 1) {
+        return words[0].toUpperCase();
+      } else {
+        return words[0].substring(0, 2).toUpperCase();
+      }
+    } else {
+      const firstInitials = words.slice(0, 2).map(word => word.charAt(0).toUpperCase());
+      return firstInitials.join('');
+    }
+  }
+
+  const save = JSON.parse(Cookies.get("save"))
+
   return (
     <div className="header-holder">
       <div className='header'>
@@ -33,7 +51,15 @@ function Header(props) {
       </div>
 
       <div className={`header-menu ${menuOpen?'open':''}`}>
+        <div className='header-menu-cont'>
+          <div className='header-user-det-cont'>
+            <div className='header-user-det-dp'>
+              { getInitials(save.name) }
+            </div>
+          </div>
+        </div>
       </div>
+
       <div className={`header-contextmenu ${contextMenuOpen?'open':''}`}>
         {children}
       </div>
