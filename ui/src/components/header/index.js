@@ -52,6 +52,7 @@ function Header(props) {
 
       <div className={`header-menu ${menuOpen?'open':''}`}>
         <div className='header-menu-cont'>
+          
           <div className='header-user-det-cont'>
             <div className='header-user-det-dp-cont'>
               <div className='header-user-det-dp'>
@@ -69,6 +70,28 @@ function Header(props) {
               </div>
             </div>
           </div>
+
+          <div className='header-menu-items-cont'>
+            <div className='header-menu-items'>
+                <hr className='menu-items-sep'/>
+                <a className='header-menu-item menu-selected' href='/home' target='_self'>
+                  {`Home`}
+                </a>
+                <a className='header-menu-item' href='/buddies' target='_self'>
+                  {`Buddies`}
+                </a>
+            </div>
+            <div className='header-settings-cont'>
+                <hr className='menu-items-sep'/>
+                <a className='header-menu-item' href='/settings' target='_self'>
+                  {`Settings`}
+                </a>
+                <div className='header-menu-item'>
+                  {`Sign Out`}
+                </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
