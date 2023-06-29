@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "./index.css"
 import Header from '../../components/header';
 import API from '../../api';
+import _ from "../../_"
 
 function Buddies(props){
 
@@ -36,21 +37,43 @@ function Buddies(props){
                         return <div className='buddy-container' key={buddy.username}>
                             <div className='buddy-status-color' style={{ backgroundColor: statusColors[buddy.status]?`#${statusColors[buddy.status]}`:`#${statusColors.NA}` }}></div>
                                 <div className='buddy-display'>
-                                    <div className='buddy-dp-holder'>
-                                        <div className='buddy-dp-text'>
-                                            {buddy.name.charAt(0).toUpperCase()}
+                                    <div className='buddy-det-cont'>
+                                        <div className='buddy-dp-holder'>
+                                            <div className='buddy-dp-text'>
+                                                {_.getInitials(buddy.name)}
+                                            </div>
+                                        </div>
+                                        <div className='buddy-details'>
+                                            <div className='buddy-row-1'>
+                                                <div className='buddy-basic'>
+                                                    <div className='buddy-name'>{buddy.name}</div>
+                                                    <div className='buddy-phone'>{buddy.phone}</div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className='buddy-details'>
-                                    <div className='buddy-row-1'>
-                                        <div className='buddy-basic'>
-                                            <div className='buddy-name'>{buddy.name}</div>
-                                            <div className='buddy-phone'>{buddy.phone}</div>
+                                    <div className='buddy-stats-cont'>
+                                        <div className='buddy-stat buddy-stat-even'>
+                                            {buddy.status}
+                                        </div>
+                                        <div className='buddy-stat buddy-stat-odd'>
+                                            {buddy.program}
+                                        </div>
+                                        <div className='buddy-stat buddy-stat-even'>
+                                            {buddy.attendance}
+                                        </div>
+                                        <div className='buddy-stat buddy-stat-odd'>
+                                            {buddy.regularity}
+                                        </div>
+                                        <div className='buddy-stat buddy-stat-even'>
+                                            {buddy.lastSeen}
+                                        </div>
+                                        <div className='buddy-stat buddy-stat-odd'>
+                                            {buddy.dob}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     })
                 }
             </div>
