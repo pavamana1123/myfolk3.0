@@ -7,7 +7,12 @@ import Cookies from 'js-cookie'
 
 function Buddies(props){
 
-    const save = JSON.parse(Cookies.get("save"))
+    var save
+    try {
+        save = JSON.parse(Cookies.get("save"))
+    }catch{
+        window.open("https://script.google.com/macros/s/AKfycbyyx_2SrcN1xslj4HQdfkBa5MBmqDxXpb3nfRLhyV6zG-C_6c4sVGcB57yog5Wfu5U6zg/exec", "_self")
+    }
     if(save.username!='pvpd'){
         window.open("https://script.google.com/macros/s/AKfycbyyx_2SrcN1xslj4HQdfkBa5MBmqDxXpb3nfRLhyV6zG-C_6c4sVGcB57yog5Wfu5U6zg/exec", "_self")
     }
