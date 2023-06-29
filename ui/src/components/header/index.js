@@ -31,9 +31,9 @@ function Header(props) {
   return (
     <div className="header-holder">
       <div className='header'>
-          <img src="header/menu.png" id="header-menu" onClick={toggleMenu}/>
-          <img src="header/logo.png" id="header-logo"/>
-          <img src="header/dots.png" id="header-dots" onClick={toggleContextMenu}/>
+          <img src="img/header/menu.png" id="header-menu" onClick={toggleMenu}/>
+          <img src="img/header/logo.png" id="header-logo"/>
+          <img src="img/header/dots.png" id="header-dots" onClick={toggleContextMenu}/>
       </div>
 
       <div className={`header-menu ${menuOpen?'open':''}`}>
