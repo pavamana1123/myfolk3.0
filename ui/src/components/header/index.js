@@ -53,8 +53,20 @@ function Header(props) {
       <div className={`header-menu ${menuOpen?'open':''}`}>
         <div className='header-menu-cont'>
           <div className='header-user-det-cont'>
-            <div className='header-user-det-dp'>
-              { getInitials(save.name) }
+            <div className='header-user-det-dp-cont'>
+              <div className='header-user-det-dp'>
+                { getInitials(save.name) }
+              </div>
+            </div>
+            <div className='header-user-det'>
+              <div className='header-user-det-name'>
+                {save.name}
+              </div>
+              <div className='header-user-det-id'>
+                {`@${save.username} | ${save.roleInfo.sort((r1, r2)=>{
+                  return r1.roleIndex>r2.roleIndex?-1:1
+                })[0].roleName}`}
+              </div>
             </div>
           </div>
         </div>
