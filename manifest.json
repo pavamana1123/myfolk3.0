@@ -1,6 +1,6 @@
 {
-  "short_name": "name",
-  "name": "name",
+  "short_name": "FOLK",
+  "name": "FOLK Mysore",
   "scope": "./",
   "icons": [
     {
@@ -19,7 +19,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/login",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
