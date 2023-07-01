@@ -40,7 +40,7 @@ const Login = () => {
       .post('/api', requestBody, { headers: { endpoint: '/login' } })
       .then((user) => {
         Cookies.set('save', JSON.stringify(user.data), { expires: 7 });
-        window.open("/home","_self")
+        window.open("/buddies","_self")
       })
       .catch((error) => {
         // Handle the error

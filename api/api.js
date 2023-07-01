@@ -66,6 +66,8 @@ class API {
                         roleID: r.roleID,
                         roleIndex: r.roleIndex
                       }
+                    }).sort((r1, r2)=>{
+                      return r1.roleIndex-r2.roleIndex
                     })
                   }
           

@@ -17,7 +17,7 @@ function App() {
         <Routes>
           <Route path="/elements" element={<Elements/>}></Route>
           <Route path="/buddies" element={<Buddies/>}></Route>
-          <Route path="/" element={<Login/>}></Route>
+          <Route path="/login" element={<Login/>}></Route>
         </Routes>
     </Router>
     <ToastContainer />

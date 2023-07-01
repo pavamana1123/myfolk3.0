@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './index.css';
-import Cookies from 'js-cookie'
 import _ from "../../_"
+import menu from "../../menu"
 
 
 function Header(props) {
@@ -26,7 +26,7 @@ function Header(props) {
     setContextMenuOpen(false)
   }
 
-  const save = JSON.parse(Cookies.get("save"))
+  const save = _.getSave()
 
   return (
     <div className="header-holder">
@@ -38,7 +38,6 @@ function Header(props) {
 
       <div className={`header-menu ${menuOpen?'open':''}`}>
         <div className='header-menu-cont'>
-          
           <div className='header-user-det-cont'>
             <div className='header-user-det-dp-cont'>
               <div className='header-user-det-dp'>
@@ -60,12 +59,17 @@ function Header(props) {
           <div className='header-menu-items-cont'>
             <div className='header-menu-items'>
                 <hr className='menu-items-sep'/>
-                <a className='header-menu-item menu-selected' href='/home' target='_self'>
-                  {`Home`}
-                </a>
-                <a className='header-menu-item' href='/buddies' target='_self'>
-                  {`Buddies`}
-                </a>
+                {
+                  menu.filter(m=>{
+                    return m.roles.indexOf(save.roleInfo[0].roleName)!=-1
+                  }).map(m=>{
+                    return (
+                      <a className={`header-menu-item ${window.location.pathname==m.url?'menu-selected':''}`} href={m.url} target='_self'>
+                        {m.title}
+                      </a>
+                   )
+                  })
+                }
             </div>
             <div className='header-settings-cont'>
                 <hr className='menu-items-sep'/>
