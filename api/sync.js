@@ -2,19 +2,6 @@ const axios = require('axios')
 const mysql = require('mysql')
 const fs = require('fs')
 
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "iskconmy_folk"
-})
-
-connection.connect((err)=>{
-  if(err){
-    throw err
-  }
-})
-
 function generateInsertStatements(tableName, entries) {
   const insertStatements = []
 
@@ -86,7 +73,7 @@ function generateDeleteQueries(data) {
   return deleteQueries
 }
 
-async function makePostRequest() {
+async function getSyncData() {
   try {
     const url = 'https://vol.iskconmysore.org/api'
     const body = { func: 'syncFOLK' }
@@ -101,57 +88,12 @@ async function makePostRequest() {
   }
 }
 
-function executeQuery(query) {
-  return new Promise((resolve, reject) => {
-    connection.query(query, (err, results, fields) => {
-      if (err) {
-        reject(err)
-        return
-      }
-      resolve(results)
-    })
-  })
+const sync = {
+  getSyncData,
+  generateDeleteQueries,
+  generateInsertStatements
 }
 
-// Example usage
-makePostRequest()
-  .then(async apiResponse => {
-    var insertStatements = []
-    var tables = apiResponse.data
-    for (const tableName in tables) {
-        const tableEntries = tables[tableName]
-        insertStatements = insertStatements.concat(generateInsertStatements(tableName, tableEntries))
-    }
 
-    var delQ = generateDeleteQueries(tables)
-    insertStatements = delQ.concat(insertStatements)
+module.exports = sync
 
-    var errors = []
-
-    console.log(new Date(), `Sync began`)
-    for(var i=0; i<insertStatements.length; i++){
-      let s = insertStatements[i]
-      try {
-        await executeQuery(s)
-      } catch(e){
-        errors.push({
-          query: s,
-          error: e
-        })
-      }
-    }
-    console.log(new Date(), `Sync completed`)
-
-    if(errors.length){
-      console.log(`Errors: ${JSON.stringify(errors, null, 2)}`)
-    }
-
-    connection.end((err) => {
-      if (err) {
-        throw err
-      }
-    })
-  })
-  .catch(error => {
-    console.error('Something went wrong:', error)
-  })
