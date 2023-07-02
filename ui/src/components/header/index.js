@@ -76,7 +76,7 @@ function Header(props) {
                 <a className='header-menu-item' href='/settings' target='_self'>
                   {`Settings`}
                 </a>
-                <div className='header-menu-item'>
+                <div className='header-menu-item signout'>
                   {`Sign Out`}
                 </div>
             </div>
