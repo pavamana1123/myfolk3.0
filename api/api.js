@@ -132,14 +132,11 @@ class API {
           case "/sync":
             sync.getSyncData()
             .then(async resp => {
-              var queries = []
-              for (const tableName in resp.data) {
-                  queries = queries.concat(sync.generateInsertStatements(tableName, resp.data[tableName]))
-              }
-              queries = sync.generateDeleteQueries(resp.data).concat(queries)
-              
+              var queries = sync.getQueries(resp.data)
               var errors = []
+
               console.log(new Date(), `Sync began`)
+
               for(var i=0; i<queries.length; i++){
                 try {
                   await this.db.execQuery(queries[i])

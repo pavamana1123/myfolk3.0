@@ -2,6 +2,15 @@ const axios = require('axios')
 const mysql = require('mysql')
 const fs = require('fs')
 
+
+function generateInsertQueries(data){
+  var queries = []
+  for (const tableName in data) {
+    queries = queries.concat(generateInsertStatements(tableName, data[tableName]))
+  }
+  return queries
+}
+
 function generateInsertStatements(tableName, entries) {
   const insertStatements = []
 
@@ -69,7 +78,6 @@ function generateDeleteQueries(data) {
     const deleteQuery = `DELETE FROM iskconmy_folk.${tableName}`
     deleteQueries.push(deleteQuery)
   }
-
   return deleteQueries
 }
 
@@ -88,10 +96,28 @@ async function getSyncData() {
   }
 }
 
+function getQueries(data){
+  var data1 = JSON.parse(JSON.stringify(data))
+  return generateDeleteQueries(data)
+  .concat(generateInsertQueries(data))
+  .concat(generateRoleQueries(data1))
+}
+
+function generateRoleQueries(data){
+  return [
+    `DELETE FROM iskconmy_folk.roles;`,
+    `INSERT INTO iskconmy_folk.roles (username, roleIndex, roleID, roleName) VALUES ('pvpd', 0, 'FG', 'FOLK Guide');`,
+    `INSERT INTO iskconmy_folk.roles (username, roleIndex, roleID, roleName) VALUES ('skkd', 0, 'FG', 'FOLK Guide');`
+  ].concat(data.participants.filter(p=>{
+    return p.buddy == 'Core'
+  }).map(p=>{
+    return `INSERT INTO iskconmy_folk.roles (username, roleIndex, roleID, roleName) VALUES ('${p.name.toLowerCase().replace(/\s/g, '')}', 1, 'Core', 'Core');`
+  }))
+}
+
 const sync = {
   getSyncData,
-  generateDeleteQueries,
-  generateInsertStatements
+  getQueries
 }
 
 
