@@ -24,9 +24,29 @@ const getSave = ()=>{
 
 }
 
+const auth = ()=>{
+  if(window.location.pathname.startsWith('/login')){
+    if(Cookies.get('save')){
+      window.location.href = (()=>{
+        return new URLSearchParams(window.location.search).get('redirect') || '/home'
+      })()
+    } 
+  }else{
+    if(!Cookies.get('save')){
+      window.location.href = `/login?redirect=${window.location.pathname}`
+    }
+  }
+}
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const phoneRegex = /^\d{10}$/
+
 const _ = {
     getInitials,
-    getSave
+    getSave,
+    auth,
+    emailRegex,
+    phoneRegex
 }
 
 export default _

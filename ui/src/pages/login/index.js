@@ -92,6 +92,11 @@ const Login = () => {
           Login
         </button>
       </form>
+
+      <a className='login-forgot' href='/reset-password'>
+        Reset Password
+      </a>
+
     </div>
   );
 };

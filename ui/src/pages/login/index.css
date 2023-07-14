@@ -2,14 +2,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     height: 100vh;
     background-color: #f5f5f5;
+    max-height: 99vh;
+    overflow-y: scroll;
   }
   
   .login-logo {
     width: 200px;
     height: 200px;
+    margin-top: 10vh;
   }
   
   .login-form {
@@ -43,5 +45,11 @@
   .login-button:disabled {
     background-color: #b0b0b0;
     cursor: not-allowed;
+  }
+
+  .login-forgot {
+    margin-top: 4vh;
+    color: var(--surface);
+    text-decoration: underline;
   }
   

@@ -8,6 +8,7 @@ import Login from './pages/login';
 import Buddies from './pages/buddies';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ResetPassword from './pages/reset-password';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/elements" element={<Elements/>}></Route>
           <Route path="/buddies" element={<Buddies/>}></Route>
           <Route path="/login" element={<Login/>}></Route>
+          <Route path="/reset-password" element={<ResetPassword/>}></Route>
         </Routes>
     </Router>
     <ToastContainer />
