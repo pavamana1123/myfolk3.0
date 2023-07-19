@@ -14,8 +14,6 @@ import _ from "../../_"
 
 const ResetPassword = () => {
 
-  _.auth()
-
   const otpExpirationSeconds = 300
   const [inputID, setinputID] = useState('')
   const [otp, setOtp] = useState('')
@@ -38,10 +36,7 @@ const ResetPassword = () => {
 
 
   const isValidInputID = (input)=> {
-    const numberRegex = /^\d{10}$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
-    return numberRegex.test(input) || emailRegex.test(input);
+    return input!="" && (_.phoneRegex.test(input) || _.emailRegex.test(input) || input == input.toLowerCase())
   }
 
   const isValidOTP = (input)=> {
@@ -50,8 +45,9 @@ const ResetPassword = () => {
   }
 
   const handleInputIDChange = (e) => {
-    setinputID(e.target.value.trim().replace(/\s/g, ''))
-    if(isValidInputID(e.target.value)){
+    var val = e.target.value.trim().toLowerCase().replace(/\s/g, '')
+    setinputID(val)
+    if(isValidInputID(val)){
       setSendOTPEnabled(true)
     }else{
       setSendOTPEnabled(false)
@@ -70,13 +66,15 @@ const ResetPassword = () => {
   const handleSendOtp = () => {
     const endpoint = '/api'
     const requestData = {
-      id: `vseva-${inputID}`,
+      id: `myfolk-${inputID}`,
     }
 
-    if (inputID.includes('@')) {
+    if (_.emailRegex.test(inputID)) {
       requestData.email = inputID
-    } else {
+    } else if (_.phoneRegex.text(inputID)){
       requestData.phone = inputID
+    } else {
+      requestData.username = inputID
     }
 
     setSendOTPWaiting(true)
@@ -89,7 +87,7 @@ const ResetPassword = () => {
         }
       })
       .then((response) => {
-        userData.current = response.data
+        userData.current = response .data
         toast.success(`OTP is sent to your ${isNaN(inputID)?'Email ID':'WhatsApp number'}`)
         setOtpSent(true)
         startOTPTimer()
@@ -167,7 +165,7 @@ const ResetPassword = () => {
       :<>
         <img src="/img/login/logo.png" className="respass-logo" />
         <label className='respass-label-1'>
-        {otpSent?`Enter 6-digit OTP sent to your ${isNaN(inputID)?'Email ID':'WhatsApp number'} ${inputID}`:'To reset password enter registered 10-digit WhatsApp number or Email-ID below'}
+        {otpSent?`Enter 6-digit OTP sent to your ${isNaN(inputID)?'Email ID':'WhatsApp number'} ${inputID}`:'To reset password enter registered 10-digit WhatsApp number or Email-ID or username below'}
         </label>
         <input
           type="text"
