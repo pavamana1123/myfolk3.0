@@ -75,7 +75,7 @@ const Login = () => {
         <input
           type="text" 
           className="login-input"
-          placeholder="Phone or Username"
+          placeholder="Phone"
           value={phoneOrUsername}
           onChange={(e) => setPhoneOrUsername(e.target.value)}
           required

@@ -9,8 +9,8 @@
   }
   
   .login-logo {
-    width: 200px;
-    height: 200px;
+    width: 50vw;
+    height: 50vw;
     margin-top: 10vh;
   }
   
@@ -18,27 +18,27 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 5vw;
   }
   
   .login-input {
-    width: 300px;
-    height: 40px;
-    margin-bottom: 10px;
-    padding: 5px;
+    width: 70vw;
+    height: 8vw;
+    margin-bottom: 3vw;
+    padding: 1.5vw;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: 1vw;
+    font-size: 4vw;
   }
   
   .login-button {
-    width: 300px;
-    height: 40px;
+    width: 73vw;
+    height: 12vw;
     background-color: #1976d2;
     color: #fff;
-    font-size: 16px;
+    font-size: 4vw;
     border: none;
-    border-radius: 4px;
+    border-radius: 1vw;
     cursor: pointer;
   }
   

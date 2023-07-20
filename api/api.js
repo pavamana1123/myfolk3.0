@@ -1,4 +1,5 @@
 const sync = require("./sync.js")
+const axios = require('axios')
 
 function newError(code, msg){
   return { code, msg }
@@ -114,6 +115,55 @@ async function datasync(req, res, db){
   })
 }
 
+async function sendOtp(req, res, db){
+  var { phone, email, id } = req.body
+  try {
+    let query = `select * from
+    (SELECT username, phone, email FROM users
+    union
+    SELECT username, phone, email FROM participants) as t
+    where t.${phone?'phone':'email'}='${phone?phone:email}';`
+    var result = await db.execQuery(query)
+    if(result.length == 0) {
+      return newError(404, "User does not exist")
+    }
+  }catch(e){
+    return newError(500, e)
+  }
+  
+  axios.post('https://otp.iskconmysore.org/data', { id, email, phone }, {
+    headers: {
+      'endpoint': '/send',
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(() => {
+      res.status(200).send()
+    })
+    .catch(error => {
+      return newError(error.response.status, error)
+    })
+}
+
+async function verifyOtp(req, res, db){
+  var { otp , id } = body
+  
+  axios.post('https://otp.iskconmysore.org/data', {
+    id, otp
+  }, {
+    headers: {
+      'endpoint': '/verify',
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(() => {
+      res.status(200).send()
+    })
+    .catch(error => {
+      return newError(error.response.status, error)
+    })
+}
+
 class API {
     constructor(db){
         this.db = db
@@ -121,6 +171,8 @@ class API {
           '/login': login,
           '/buddies': buddies,
           '/datasync': datasync,
+          '/send-otp': sendOtp,
+          '/verify-otp': verifyOtp,
         }
     }
 
@@ -132,10 +184,10 @@ class API {
       if(this.apimap[endpoint]){
         var err = await (this.apimap[endpoint])(req, res, this.db)
         if(err){
-          this.sendError(res, err.code, err.msg)
+          return newError(err.code, err.msg)
         }
       }else{
-        this.sendError(res, 404, "Invalid endpoint")
+        return newError(404, "Invalid endpoint")
       }
   }
 

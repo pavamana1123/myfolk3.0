@@ -36,7 +36,7 @@ const ResetPassword = () => {
 
 
   const isValidInputID = (input)=> {
-    return input!="" && (_.phoneRegex.test(input) || _.emailRegex.test(input) || input == input.toLowerCase())
+    return input!="" && (_.phoneRegex.test(input) || _.emailRegex.test(input))
   }
 
   const isValidOTP = (input)=> {
@@ -71,7 +71,7 @@ const ResetPassword = () => {
 
     if (_.emailRegex.test(inputID)) {
       requestData.email = inputID
-    } else if (_.phoneRegex.text(inputID)){
+    } else if (_.phoneRegex.test(inputID)){
       requestData.phone = inputID
     } else {
       requestData.username = inputID
@@ -87,7 +87,7 @@ const ResetPassword = () => {
         }
       })
       .then((response) => {
-        userData.current = response .data
+        userData.current = response.data
         toast.success(`OTP is sent to your ${isNaN(inputID)?'Email ID':'WhatsApp number'}`)
         setOtpSent(true)
         startOTPTimer()
@@ -104,7 +104,7 @@ const ResetPassword = () => {
   const handleVerifyOtp = () => {
     const endpoint = '/api'
     const requestData = {
-      id: `vseva-${inputID}`,
+      id: `myfolk-${inputID}`,
       otp
     }
 
@@ -118,8 +118,7 @@ const ResetPassword = () => {
         }
       })
       .then(() => {
-        Cookies.set('save', JSON.stringify(userData.current))
-        window.location.href = new URLSearchParams(window.location.search).get('redirect') || '/home'
+
       })
       .catch((error) => {
         setOtp('')
@@ -158,14 +157,10 @@ const ResetPassword = () => {
 
   return (
     <div className="respass-container">
-      {otpVerified?
-      <div className='respass-success'>
-        ResetPassword successful! Redirecting...
-      </div>
-      :<>
+      <>
         <img src="/img/login/logo.png" className="respass-logo" />
         <label className='respass-label-1'>
-        {otpSent?`Enter 6-digit OTP sent to your ${isNaN(inputID)?'Email ID':'WhatsApp number'} ${inputID}`:'To reset password enter registered 10-digit WhatsApp number or Email-ID or username below'}
+        {otpSent?`Enter 6-digit OTP sent to your ${isNaN(inputID)?'Email ID':'WhatsApp number'} ${inputID}`:'To reset password enter registered 10-digit WhatsApp number or Email-ID below'}
         </label>
         <input
           type="text"
@@ -189,7 +184,7 @@ const ResetPassword = () => {
             <span>{`Your OTP expires in  ${Math.floor(secondsRemaining / 60).toString().padStart(2, '0')}:${Math.floor(secondsRemaining % 60 < 10 ? `0${secondsRemaining % 60}` : secondsRemaining % 60).toString().padStart(2, '0')}`}</span>
           </div>
         )}
-      </>}
+      </>
     </div>
   )
 }
