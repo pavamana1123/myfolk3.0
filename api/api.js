@@ -6,71 +6,52 @@ function newError(code, msg){
 
 async function login(req, res, db){
     try {
-      const { phone, username, password } = req.body
-  
-      let users = null
-      let userDetails = null
-  
-      let query = `SELECT * FROM participants WHERE ${phone?"phone":"username"} = '${phone?phone:username}'`
+      const { phone, password } = req.body
+
+      let query = `SELECT * FROM participants WHERE phone = '${phone}'`
       let result = await db.execQuery(query)
-  
-      if (result.length > 0) {
-        users = result
-        userDetails = {
-          username: user.username,
-          name: user.name,
-          phone: user.phone,
-          roleInfo: []
-        }
-      } else {
-        query = `SELECT * FROM users WHERE ${phone?"phone":"username"} = '${phone?phone:username}'`
+      if (result.length == 0) {
+        query = `SELECT * FROM users WHERE phone = '${phone}'`
         result = await db.execQuery(query)
-  
+        if(result.length == 0) {
+          return newError(404, "User does not exist")
+        }
+      }
+
+      var user = {
+        username: result[0].username,
+        name: result[0].name,
+        phone: result[0].phone,
+        roleInfo: []
+      }
+
+      if (result[0].pass == password) {
+        query = `SELECT * FROM roles WHERE username='${user.username}'`
+        result = await db.execQuery(query)
         if (result.length > 0) {
-          user = result[0]
-          userDetails = {
-            username: user.username,
-            name: user.name,
-            phone: user.phone,
-            roleInfo: []
-          }
+          user.roleInfo = result.map(r=>{
+            return {
+              roleName: r.roleName,
+              roleID: r.roleID,
+              roleIndex: r.roleIndex
+            }
+          }).sort((r1, r2)=>{
+            return r1.roleIndex-r2.roleIndex
+          })
         }
-      }
   
-      if (user) {
-        if (user.reduce((match, u)=>{
-          return match || u.pass == password
-        }, false)) {
-          query = `SELECT * FROM roles WHERE username='${user.username}'`
-          result = await db.execQuery(query)
-  
-          if (result.length > 0) {
-            const roleInfo = result
-            userDetails.roleInfo = roleInfo.map(r=>{
-              return {
-                roleName: r.roleName,
-                roleID: r.roleID,
-                roleIndex: r.roleIndex
-              }
-            }).sort((r1, r2)=>{
-              return r1.roleIndex-r2.roleIndex
-            })
-          }
-  
-          res.status(200).json(userDetails)
-        } else {
-          return newError(403, "Invalid password")
-        }
+        res.status(200).json(user)
       } else {
-        return newError(404, "User does not exist")
+        return newError(403, "Invalid password")
       }
+
     } catch (error) {
       console.error("Login error:", error)
       return newError(500, "Internal server error")
     }
 }
 
-async function buddies(req, res){
+async function buddies(req, res, db){
 
   const username = req.get("username")
   try {
@@ -107,7 +88,7 @@ async function buddies(req, res){
   }
 }
 
-async function datasync(req, res){
+async function datasync(req, res, db){
   sync.getSyncData()
   .then(async resp => {
     var queries = sync.getQueries(resp.data)
