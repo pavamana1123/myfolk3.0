@@ -22,9 +22,10 @@ const ResetPassword = () => {
   const [timerID, setTimerID] = useState()
   const [sendOTPEnabled, setSendOTPEnabled] = useState(false)
   const [verifyOTPEnabled, setVerifyOTPEnabled] = useState(false)
+  const [resetPassEnabled, setResetPassEnabled] = useState(false)
   const [sendOTPWaiting, setSendOTPWaiting] = useState(false)
   const [verifyOTPWaiting, setVerifyOTPWaiting] = useState(false)
-  const [otpVerified, setOTPVerified] = useState(false)
+  const [otpVerified, setOTPVerified] = useState(true)
 
   var respassInput = useRef()
   var otpTimestamp = useRef(null)
@@ -139,6 +140,49 @@ const ResetPassword = () => {
       })
   }
 
+  const handleNewPassChange = (e) => {
+    setinputID(e.target.value)
+    setResetPassEnabled(e.target.value.length>3)
+  }
+
+  const handleResetPass = () => {
+    const endpoint = '/api'
+    const requestData = {
+      id: `myfolk-${inputID}`,
+      otp
+    }
+
+    setVerifyOTPWaiting(true)
+    setVerifyOTPEnabled(false)
+
+    axios.post(endpoint, requestData, {
+        headers: {
+          'endpoint': '/verify-otp',
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(() => {
+
+      })
+      .catch((error) => {
+        setOtp('')
+        toast.error((()=>{
+          switch(error.response.status){
+              case 403:
+                return 'Incorrect OTP! Please check and try again.'
+              case 404:
+                return 'OTP has expired! Refresh page and try again.'
+              default:
+                return 'Unable to verify OTP. Please contact the admin.'
+            }
+          })()
+        )
+      })
+      .finally(()=>{
+        setOTPVerified(true)
+      })
+  }
+
   const startOTPTimer = () => {
     otpTimestamp.current = moment()
     setTimerID(setInterval(() => {
@@ -160,23 +204,23 @@ const ResetPassword = () => {
       <>
         <img src="/img/login/logo.png" className="respass-logo" />
         <label className='respass-label-1'>
-        {otpSent?`Enter 6-digit OTP sent to your ${isNaN(inputID)?'Email ID':'WhatsApp number'} ${inputID}`:'To reset password enter registered 10-digit WhatsApp number or Email-ID below'}
+        {otpVerified?`Enter new password (minimum 4 characters)`:(otpSent?`Enter 6-digit OTP sent to your ${isNaN(inputID)?'Email ID':'WhatsApp number'} ${inputID}`:'To reset password enter registered 10-digit WhatsApp number or Email-ID below')}
         </label>
         <input
           type="text"
           value={otpSent?otp:inputID}
-          onChange={otpSent?handleOtpChange:handleInputIDChange}
-          placeholder={otpSent?'Enter OTP':''}
+          onChange={otpVerified?handleNewPassChange:(otpSent?handleOtpChange:handleInputIDChange)}
+          placeholder={otpVerified?'New Password':(otpSent?'Enter OTP':'')}
           className="respass-input"
           ref={respassInput}
         />
 
         <button
-          onClick={otpSent?handleVerifyOtp:handleSendOtp}
-          disabled={otpSent?!verifyOTPEnabled:!sendOTPEnabled}
+          onClick={otpVerified?handleResetPass:(otpSent?handleVerifyOtp:handleSendOtp)}
+          disabled={otpVerified?!resetPassEnabled:(otpSent?!verifyOTPEnabled:!sendOTPEnabled)}
           className="respass-send-button"
         >
-          {otpSent?(verifyOTPWaiting?'Verifying...':'Verify OTP'):(sendOTPWaiting?'Sending...':'Send OTP')}
+          {otpVerified?`Reset Password`:(otpSent?(verifyOTPWaiting?'Verifying...':'Verify OTP'):(sendOTPWaiting?'Sending...':'Send OTP'))}
         </button>
 
         {otpSent && (

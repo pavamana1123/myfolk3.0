@@ -117,13 +117,14 @@ async function datasync(req, res, db){
 
 async function sendOtp(req, res, db){
   var { phone, email, id } = req.body
+  var result = {}
   try {
     let query = `select * from
     (SELECT username, phone, email FROM users
     union
     SELECT username, phone, email FROM participants) as t
     where t.${phone?'phone':'email'}='${phone?phone:email}';`
-    var result = await db.execQuery(query)
+    result = await db.execQuery(query)
     if(result.length == 0) {
       return newError(404, "User does not exist")
     }
@@ -138,7 +139,7 @@ async function sendOtp(req, res, db){
     }
   })
     .then(() => {
-      res.status(200).send()
+      res.status(200).send(result[0])
     })
     .catch(error => {
       return newError(error.response.status, error)
@@ -164,6 +165,30 @@ async function verifyOtp(req, res, db){
     })
 }
 
+async function resetPass(req, res, db){
+  try {
+    const { username, password } = req.body
+
+    let query = `SELECT * FROM participants WHERE phone = '${phone}'`
+    let result = await db.execQuery(query)
+    if (result.length == 0) {
+      query = `SELECT * FROM users WHERE phone = '${phone}'`
+      result = await db.execQuery(query)
+      if(result.length == 0) {
+        return newError(404, "User does not exist")
+      }
+    }else {
+      query = `update particiaption set pass = '${password}' where username = '${username}'`
+    }
+
+  } catch (error) {
+    console.error("Login error:", error)
+    return newError(500, "Internal server error")
+  }
+}
+
+
+
 class API {
     constructor(db){
         this.db = db
@@ -173,6 +198,7 @@ class API {
           '/datasync': datasync,
           '/send-otp': sendOtp,
           '/verify-otp': verifyOtp,
+          '/reset-pass': resetPass,
         }
     }
 
