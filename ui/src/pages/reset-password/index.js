@@ -1,8 +1,3 @@
-// TODO
-// - change inputID feature
-// - resend OTP feature
-
-
 import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import moment from 'moment'

@@ -207,7 +207,7 @@ class API {
         this.apimap = {
           '/login': login,
           '/buddies': buddies,
-          '/datasync': datasync,
+          '/data-sync': datasync,
           '/send-otp': sendOtp,
           '/verify-otp': verifyOtp,
           '/reset-pass': resetPass,
