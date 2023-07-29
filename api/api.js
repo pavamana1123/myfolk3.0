@@ -149,7 +149,7 @@ async function sendOtp(req, res, db){
 }
 
 async function verifyOtp(req, res, db){
-  var { otp , id } = body
+  var { otp , id } = req.body
   
   axios.post('https://otp.iskconmysore.org/data', {
     id, otp

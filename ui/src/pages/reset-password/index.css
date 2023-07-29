@@ -78,3 +78,13 @@
     align-items: baseline;
     justify-content: center;
   }
+  
+  .pass-redirect {
+    display: flex;
+    width: 85%;
+    text-align: center;
+    height: 100%;
+    align-items: center;
+    font-size: 5vw;
+    white-space: break-spaces;
+  }

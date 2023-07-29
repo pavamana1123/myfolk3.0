@@ -6,7 +6,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import moment from 'moment'
-import Cookies from 'js-cookie'
+import md5 from 'md5';
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import "./index.css"
@@ -25,7 +25,10 @@ const ResetPassword = () => {
   const [resetPassEnabled, setResetPassEnabled] = useState(false)
   const [sendOTPWaiting, setSendOTPWaiting] = useState(false)
   const [verifyOTPWaiting, setVerifyOTPWaiting] = useState(false)
-  const [otpVerified, setOTPVerified] = useState(true)
+  const [otpVerified, setOTPVerified] = useState(false)
+  const [resetPassWaiting, setResetPassWaiting] = useState(false)
+  const [passReset, setPassReset] = useState(false)
+  const [username, setUsername] = useState('')
 
   var respassInput = useRef()
   var otpTimestamp = useRef(null)
@@ -92,6 +95,7 @@ const ResetPassword = () => {
         toast.success(`OTP is sent to your ${isNaN(inputID)?'Email ID':'WhatsApp number'}`)
         setOtpSent(true)
         startOTPTimer()
+        setUsername(response.data.username)
       })
       .catch((error) => {
         toast.error(error.response.status==404?`Invalid ${requestData.email?'Email ID':'WhatsApp number'}`:'Could not send OTP. Please contact the admin.')
@@ -119,7 +123,11 @@ const ResetPassword = () => {
         }
       })
       .then(() => {
-
+        setinputID('')
+        setOTPVerified(true)
+        clearInterval(timerID)
+        setSecondsRemaining(otpExpirationSeconds)
+        otpTimestamp.current=null
       })
       .catch((error) => {
         setOtp('')
@@ -135,9 +143,7 @@ const ResetPassword = () => {
           })()
         )
       })
-      .finally(()=>{
-        setOTPVerified(true)
-      })
+
   }
 
   const handleNewPassChange = (e) => {
@@ -147,39 +153,30 @@ const ResetPassword = () => {
 
   const handleResetPass = () => {
     const endpoint = '/api'
-    const requestData = {
-      id: `myfolk-${inputID}`,
-      otp
+    const requestData = { 
+      password: md5(inputID),
+      username 
     }
 
-    setVerifyOTPWaiting(true)
-    setVerifyOTPEnabled(false)
+    setResetPassWaiting(true)
 
     axios.post(endpoint, requestData, {
         headers: {
-          'endpoint': '/verify-otp',
+          'endpoint': '/reset-pass',
           'Content-Type': 'application/json'
         }
       })
       .then(() => {
-
+        setPassReset(true)
+        setTimeout(()=>{
+          window.open("/login", "_self")
+        }, 4000)
       })
       .catch((error) => {
         setOtp('')
-        toast.error((()=>{
-          switch(error.response.status){
-              case 403:
-                return 'Incorrect OTP! Please check and try again.'
-              case 404:
-                return 'OTP has expired! Refresh page and try again.'
-              default:
-                return 'Unable to verify OTP. Please contact the admin.'
-            }
-          })()
-        )
-      })
-      .finally(()=>{
-        setOTPVerified(true)
+        setOtpSent(false)
+        toast.error('Unable to reset password. Please try agin or contact the admin')
+
       })
   }
 
@@ -189,9 +186,9 @@ const ResetPassword = () => {
       var s = otpExpirationSeconds - moment.duration(moment().diff(otpTimestamp.current)).asSeconds()
       setSecondsRemaining(s)
       if (s <= 0) {
-        clearInterval(timerID)
-        setOtpSent(false)
         setinputID('')
+        setOtpSent(false)
+        clearInterval(timerID)
         setSecondsRemaining(otpExpirationSeconds)
         otpTimestamp.current=null
         toast.error('OTP has expired! Try again.')
@@ -201,14 +198,14 @@ const ResetPassword = () => {
 
   return (
     <div className="respass-container">
-      <>
+      {!passReset? <>
         <img src="/img/login/logo.png" className="respass-logo" />
         <label className='respass-label-1'>
         {otpVerified?`Enter new password (minimum 4 characters)`:(otpSent?`Enter 6-digit OTP sent to your ${isNaN(inputID)?'Email ID':'WhatsApp number'} ${inputID}`:'To reset password enter registered 10-digit WhatsApp number or Email-ID below')}
         </label>
         <input
           type="text"
-          value={otpSent?otp:inputID}
+          value={otpSent?(otpVerified?inputID:otp):inputID}
           onChange={otpVerified?handleNewPassChange:(otpSent?handleOtpChange:handleInputIDChange)}
           placeholder={otpVerified?'New Password':(otpSent?'Enter OTP':'')}
           className="respass-input"
@@ -217,18 +214,21 @@ const ResetPassword = () => {
 
         <button
           onClick={otpVerified?handleResetPass:(otpSent?handleVerifyOtp:handleSendOtp)}
-          disabled={otpVerified?!resetPassEnabled:(otpSent?!verifyOTPEnabled:!sendOTPEnabled)}
+          disabled={otpVerified?(!resetPassEnabled || resetPassWaiting):(otpSent?!verifyOTPEnabled:!sendOTPEnabled)}
           className="respass-send-button"
         >
           {otpVerified?`Reset Password`:(otpSent?(verifyOTPWaiting?'Verifying...':'Verify OTP'):(sendOTPWaiting?'Sending...':'Send OTP'))}
         </button>
 
-        {otpSent && (
+        {(otpSent && !otpVerified) && (
           <div className="respass-timer">
             <span>{`Your OTP expires in  ${Math.floor(secondsRemaining / 60).toString().padStart(2, '0')}:${Math.floor(secondsRemaining % 60 < 10 ? `0${secondsRemaining % 60}` : secondsRemaining % 60).toString().padStart(2, '0')}`}</span>
           </div>
         )}
-      </>
+      </>: 
+      <div className='pass-redirect'>
+        {"Your password is reset successfully!\n\n Redirecting you to the login page..."}
+      </div>}
     </div>
   )
 }
