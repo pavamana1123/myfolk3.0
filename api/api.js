@@ -139,7 +139,9 @@ async function sendOtp(req, res, db){
     }
   })
     .then(() => {
-      res.status(200).send(result[0])
+      res.status(200).send({
+        username: result[0].username
+      })
     })
     .catch(error => {
       return newError(error.response.status, error)
@@ -169,16 +171,26 @@ async function resetPass(req, res, db){
   try {
     const { username, password } = req.body
 
-    let query = `SELECT * FROM participants WHERE phone = '${phone}'`
+    let query = `UPDATE participants
+      SET pass = '${password}'
+      WHERE username = '${username}';`
     let result = await db.execQuery(query)
-    if (result.length == 0) {
-      query = `SELECT * FROM users WHERE phone = '${phone}'`
-      result = await db.execQuery(query)
-      if(result.length == 0) {
-        return newError(404, "User does not exist")
-      }
-    }else {
-      query = `update particiaption set pass = '${password}' where username = '${username}'`
+
+    if(result.affectedRows){
+      res.status(200).send()
+      return
+    }
+
+    query = `UPDATE users
+    SET pass = '${password}'
+    WHERE username = '${username}';`
+    result = await db.execQuery(query)
+
+    if(result.affectedRows){
+      res.status(200).send()
+      return
+    }else{
+      return newError(404, "username not found")  
     }
 
   } catch (error) {
@@ -210,10 +222,10 @@ class API {
       if(this.apimap[endpoint]){
         var err = await (this.apimap[endpoint])(req, res, this.db)
         if(err){
-          return newError(err.code, err.msg)
+          this.sendError(res, err.code, err.msg)
         }
       }else{
-        return newError(404, "Invalid endpoint")
+        this.sendError(res, 404, "Invalid endpoint")
       }
   }
 
