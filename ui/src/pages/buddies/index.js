@@ -45,25 +45,62 @@ const Buddy = (props)=>{
                         </div>
                     </div>
                 </div>
+
                 <div className='buddy-stats-cont'>
                     <div className='buddy-stat buddy-stat-even'>
-                        {buddy.status}
+                        <div className='buddy-stat-item'>
+                            <img className='buddy-stat-icon' src="img/buddy/tick.png"/>
+                        </div>
+                        <div className='buddy-stat-item'>
+                            {buddy.status}
+                        </div>
                     </div>
+
                     <div className='buddy-stat buddy-stat-odd'>
-                        {buddy.program}
+                        <div classname='buddy-stat-item'>
+                            <img className='buddy-stat-icon' src={`img/buddy/${buddy.registered?'tick':'wrong'}.png`}/>
+                        </div>
+                        <div className='buddy-stat-item'>
+                            {buddy.program}
+                        </div>
                     </div>
+
                     <div className='buddy-stat buddy-stat-even'>
-                        {buddy.attendance}
+                        <div classname='buddy-stat-item'>
+                            <img className='buddy-stat-icon' src="img/buddy/hash.png"/>
+                        </div>
+                        <div className='buddy-stat-item'>
+                            {buddy.attendance}
+                        </div>
                     </div>
+
                     <div className='buddy-stat buddy-stat-odd'>
-                        {buddy.regularity}
+                        <div classname='buddy-stat-item'>
+                            <img className='buddy-stat-icon' src="img/buddy/checkbox.png"/>
+                        </div>
+                        <div className='buddy-stat-item'>
+                            {buddy.regularity}
+                        </div>
                     </div>
+
                     <div className='buddy-stat buddy-stat-even'>
-                        {buddy.lastSeen}
+                        <div classname='buddy-stat-item'>
+                            <img className='buddy-stat-icon' src="img/buddy/eye.png"/>
+                        </div>
+                        <div className='buddy-stat-item'>
+                            {buddy.lastSeen}
+                        </div>
                     </div>
+
                     <div className='buddy-stat buddy-stat-odd'>
-                        {buddy.dob}
+                        <div classname='buddy-stat-item'>
+                            <img className='buddy-stat-icon' src="img/buddy/cake.png"/>
+                        </div>
+                        <div className='buddy-stat-item'>
+                            {buddy.dob}
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>

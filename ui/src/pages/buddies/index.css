@@ -58,24 +58,28 @@
     flex-direction: row;
     width: 94vw;
     justify-content: space-evenly;
-    font-style: italic;
     color: grey;
     margin-top: 0.5vw;
     user-select: none;
+    font-size: 3.5vw;
 }
 
 .buddy-stat {
+    display: flex;
+    flex-direction: row;
     width: 100%;
     padding: 1vw;
     text-align: center;
     white-space: nowrap;
+    justify-content: center;
+    align-items: center;
 }
 
-.buddy-stat-odd {
+.buddy-stat-oddx {
     background-color: aliceblue;
 }
 
-.buddy-stat-even {
+.buddy-stat-evenx {
     background-color: antiquewhite;
 }
 
@@ -97,4 +101,14 @@
 
 .buddy-wa {
     margin-right: 5vw;
+}
+
+.buddy-stat-icon {
+    width: 4.5vw;
+    margin: 1vw;
+}
+
+.buddy-stat-item {
+    display: flex;
+    vertical-align: middle;
 }

@@ -128,7 +128,7 @@ class Compute {
     }
   }
 
-  async computeStatus(username, attendance, lastSeen, regularity){
+  async computeStatus(username, attendance, lastSeen, regularity, registered){
     const participant = await this.getParticipantDetails(username)
     if(participant.category!="General"){
       return "NA"
@@ -139,7 +139,6 @@ class Compute {
     if(regularity>=0.75){
       return "Regular"
     }
-    const registered = await this.computeRegistered(username)
     const invites = await this.computeInvites(username)
     if(attendance==0){
       if(registered){
@@ -205,7 +204,8 @@ class Compute {
       const folk4Attendance = await this.computeProgramAttendance("FOLK4" ,username)
       const lastSeen = await this.computeLastSeen(username)
       const regularity = await this.computeRegularity(username)
-      const status = await this.computeStatus(username, attendance, lastSeen, regularity)
+      const registered = await this.computeRegistered(username)
+      const status = await this.computeStatus(username, attendance, lastSeen, regularity, registered)
   
       const activenessMap = {
         "Regular": 0,
@@ -221,7 +221,7 @@ class Compute {
         "NA": 10,
       }
       const activeness = activenessMap[status]
-      const query = this.computeQuery({username, attendance, sosAttendance, folk2Attendance, folk4Attendance, lastSeen, regularity, status, activeness})
+      const query = this.computeQuery({username, attendance, sosAttendance, folk2Attendance, folk4Attendance, lastSeen, regularity, status, activeness, registered})
       await this.db.execQuery(query);
     }catch(e){
       console.log('compute:', e)
