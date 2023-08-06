@@ -40,8 +40,8 @@ const Buddy = (props)=>{
                                 <div className='buddy-phone'>{buddy.phone}</div>
                             </div>
                             <div className='buddy-contact'>
-                                <a href={`tel:+91${buddy.phone}`} target='_blank'><img className='buddy-contact-img buddy-call' src='img/buddy/call.png'/></a>
-                                <a href={`https://wa.me/91${buddy.phone}`} target='_blank'><img className='buddy-contact-img buddy-wa' src='img/buddy/wa.png'/></a>
+                                <a href={`tel:+91${buddy.phone}`} target='_blank'><img className='buddy-contact-img buddy-call' src='img/buddy/call.png?v1'/></a>
+                                <a href={`https://wa.me/91${buddy.phone}`} target='_blank'><img className='buddy-contact-img buddy-wa' src='img/buddy/wa.png?v1'/></a>
                             </div>
                         </div>
                     </div>
@@ -50,7 +50,7 @@ const Buddy = (props)=>{
                 <div className='buddy-stats-cont'>
 
                     <div className='buddy-stat'>
-                        <img className='buddy-stat-icon' src={`img/buddy/${buddy.registered?'tick':'wrong'}.png`}/>
+                        <img className='buddy-stat-icon' src={`img/buddy/${buddy.registered?'tick':'wrong'}.png?v1`}/>
                         
                         <div className='buddy-stat-item'>
                             {buddy.program}
@@ -58,7 +58,7 @@ const Buddy = (props)=>{
                     </div>
 
                     <div className='buddy-stat'>
-                        <img className='buddy-stat-icon buddy-stat-hash' src="img/buddy/hash.png"/>
+                        <img className='buddy-stat-icon buddy-stat-hash' src="img/buddy/hash.png?v1"/>
                         
                         <div className='buddy-stat-item'>
                             {buddy.attendance}
@@ -66,21 +66,21 @@ const Buddy = (props)=>{
                     </div>
 
                     <div className='buddy-stat'>
-                        <img className='buddy-stat-icon buddy-stat-check' src="img/buddy/checkbox.png"/>
+                        <img className='buddy-stat-icon buddy-stat-check' src="img/buddy/checkbox.png?v1"/>
                         <div className='buddy-stat-item'>
                             {buddy.regularity}
                         </div>
                     </div>
 
                     <div className='buddy-stat'>
-                        <img className='buddy-stat-icon' src="img/buddy/eye.png"/>
+                        <img className='buddy-stat-icon' src="img/buddy/eye.png?v1"/>
                         <div className='buddy-stat-item'>
                             {buddy.lastSeen}
                         </div>
                     </div>
 
                     {buddy.dob && <div className='buddy-stat'>
-                        <img className='buddy-stat-icon' src="img/buddy/cake.png"/>
+                        <img className='buddy-stat-icon' src="img/buddy/cake.png?v1"/>
                         <div className='buddy-stat-item'>
                             {moment(buddy.dob).format("Do MMM")}
                         </div>
