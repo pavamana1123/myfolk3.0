@@ -56,31 +56,18 @@
 .buddy-stats-cont {
     display: flex;
     flex-direction: row;
-    width: 94vw;
     justify-content: space-evenly;
-    color: grey;
-    margin-top: 0.5vw;
+    color: #555;
     user-select: none;
     font-size: 3.5vw;
+    background-color: #eeeeee5c;
+    padding: 1vw;
 }
 
 .buddy-stat {
     display: flex;
     flex-direction: row;
-    width: 100%;
-    padding: 1vw;
-    text-align: center;
-    white-space: nowrap;
-    justify-content: center;
     align-items: center;
-}
-
-.buddy-stat-oddx {
-    background-color: aliceblue;
-}
-
-.buddy-stat-evenx {
-    background-color: antiquewhite;
 }
 
 .buddy-contact-img {
@@ -105,10 +92,16 @@
 
 .buddy-stat-icon {
     width: 4.5vw;
-    margin: 1vw;
+}
+
+.buddy-stat-hash {
+    width: 3.75vw;
+}
+
+.buddy-stat-check {
+    width: 3.75vw;
 }
 
 .buddy-stat-item {
-    display: flex;
-    vertical-align: middle;
+    margin: 0 1vw 0 1vw;
 }

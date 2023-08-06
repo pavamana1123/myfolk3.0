@@ -3,6 +3,7 @@ import "./index.css"
 import Header from '../../components/header';
 import API from '../../api';
 import _ from "../../_"
+import moment from 'moment'
 
 const statusColors = {
     "Regular": "43A047",
@@ -47,59 +48,43 @@ const Buddy = (props)=>{
                 </div>
 
                 <div className='buddy-stats-cont'>
-                    <div className='buddy-stat buddy-stat-even'>
-                        <div className='buddy-stat-item'>
-                            <img className='buddy-stat-icon' src="img/buddy/tick.png"/>
-                        </div>
-                        <div className='buddy-stat-item'>
-                            {buddy.status}
-                        </div>
-                    </div>
 
-                    <div className='buddy-stat buddy-stat-odd'>
-                        <div classname='buddy-stat-item'>
-                            <img className='buddy-stat-icon' src={`img/buddy/${buddy.registered?'tick':'wrong'}.png`}/>
-                        </div>
+                    <div className='buddy-stat'>
+                        <img className='buddy-stat-icon' src={`img/buddy/${buddy.registered?'tick':'wrong'}.png`}/>
+                        
                         <div className='buddy-stat-item'>
                             {buddy.program}
                         </div>
                     </div>
 
-                    <div className='buddy-stat buddy-stat-even'>
-                        <div classname='buddy-stat-item'>
-                            <img className='buddy-stat-icon' src="img/buddy/hash.png"/>
-                        </div>
+                    <div className='buddy-stat'>
+                        <img className='buddy-stat-icon buddy-stat-hash' src="img/buddy/hash.png"/>
+                        
                         <div className='buddy-stat-item'>
                             {buddy.attendance}
                         </div>
                     </div>
 
-                    <div className='buddy-stat buddy-stat-odd'>
-                        <div classname='buddy-stat-item'>
-                            <img className='buddy-stat-icon' src="img/buddy/checkbox.png"/>
-                        </div>
+                    <div className='buddy-stat'>
+                        <img className='buddy-stat-icon buddy-stat-check' src="img/buddy/checkbox.png"/>
                         <div className='buddy-stat-item'>
                             {buddy.regularity}
                         </div>
                     </div>
 
-                    <div className='buddy-stat buddy-stat-even'>
-                        <div classname='buddy-stat-item'>
-                            <img className='buddy-stat-icon' src="img/buddy/eye.png"/>
-                        </div>
+                    <div className='buddy-stat'>
+                        <img className='buddy-stat-icon' src="img/buddy/eye.png"/>
                         <div className='buddy-stat-item'>
                             {buddy.lastSeen}
                         </div>
                     </div>
 
-                    <div className='buddy-stat buddy-stat-odd'>
-                        <div classname='buddy-stat-item'>
-                            <img className='buddy-stat-icon' src="img/buddy/cake.png"/>
-                        </div>
+                    {buddy.dob && <div className='buddy-stat'>
+                        <img className='buddy-stat-icon' src="img/buddy/cake.png"/>
                         <div className='buddy-stat-item'>
-                            {buddy.dob}
+                            {moment(buddy.dob).format("Do MMM")}
                         </div>
-                    </div>
+                    </div>}
 
                 </div>
             </div>
