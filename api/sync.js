@@ -115,9 +115,29 @@ function generateRoleQueries(data){
   }))
 }
 
+async function exec(db) {
+  var resp = await getSyncData()
+  var queries = getQueries(resp.data)
+  var errors = []
+
+  console.log(new Date(), `Sync began`)
+
+  for(var i=0; i<queries.length; i++){
+    try {
+      await db.execQuery(queries[i])
+    } catch(e){
+      errors.push({
+        query: queries[i],
+        error: e
+      })
+    }
+  }
+  console.log(new Date(), `Sync completed`)
+  return errors
+}
+
 const sync = {
-  getSyncData,
-  getQueries
+  exec
 }
 
 

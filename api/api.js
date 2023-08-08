@@ -90,29 +90,12 @@ async function buddies(req, res, db){
 }
 
 async function datasync(req, res, db){
-  sync.getSyncData()
-  .then(async resp => {
-    var queries = sync.getQueries(resp.data)
-    var errors = []
-
-    console.log(new Date(), `Sync began`)
-
-    for(var i=0; i<queries.length; i++){
-      try {
-        await db.execQuery(queries[i])
-      } catch(e){
-        errors.push({
-          query: queries[i],
-          error: e
-        })
-      }
-    }
-    console.log(new Date(), `Sync completed`)
-    res.status(200).json(errors)
-  })
-  .catch(error => {
-    return newError(404, error)
-  })
+  try {
+    // throw new Error("ok")
+    res.status(200).send(await sync.exec(db))
+  }catch(e) {
+    return newError(500, e)
+  }
 }
 
 async function sendOtp(req, res, db){

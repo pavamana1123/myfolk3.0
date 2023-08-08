@@ -11,7 +11,7 @@ class Compute {
         join  calendar on calendar.eventId=participation.eventId
         join  programs on programs.id=calendar.program
         WHERE username = '${username}' AND attendance = TRUE and programs.type='Session'`;
-        const result = await db.execQuery(query);
+        const result = await this.db.execQuery(query);
         return result[0].total;
       } catch (error) {
         console.error('Error occurred while retrieving total classes attended:', error);
@@ -27,7 +27,7 @@ class Compute {
           JOIN calendar AS c ON p.eventId = c.eventId
           WHERE c.program = '${program}' AND p.username = '${username}' AND p.attendance = TRUE
         `;
-        const result = await db.execQuery(query);
+        const result = await this.db.execQuery(query);
         return result[0].total;
       } catch (error) {
         console.error('Error occurred while retrieving program attendance:', error);
@@ -244,15 +244,17 @@ class Compute {
   }
 }
 
-var cred = require("./cred.js")
-const DB = require("./db.js")
+async function exec(db){
+  try {
+    new Compute(db).computeAll()
+  }catch(e){
+    return e
+  }
+}
 
-cred.mysql.connectionLimit = 100
-cred.mysql.multipleStatements = true
+const compute = {
+  exec
+}
 
-var mysql = require('mysql');
-var db = new DB(mysql.createPool(cred.mysql))
 
-new Compute(db).computeAll()
-
-module.exports = Compute
+module.exports = compute
